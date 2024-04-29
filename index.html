@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	<title>Jettai</title>
+	<style>
+		html {
+			height:100%;
+		}
+		body {
+			background-color:#000;
+			margin:0;
+			height:100%;
+		}
+	</style>
+	<!-- copy these lines to your document head: -->
+
+	<meta name="viewport" content="user-scalable=yes, width=800" />
+	<style> @font-face {
+    font-family: 'chicagoflfregular';
+    src: url('Jettai.pro.hyperesources/chicagoflf.eot');
+    src: url('Jettai.pro.hyperesources/chicagoflf.eot?#iefix') format('embedded-opentype'),
+         url('Jettai.pro.hyperesources/chicagoflf.woff2') format('woff2'),
+         url('Jettai.pro.hyperesources/chicagoflf.woff') format('woff'),
+         url('Jettai.pro.hyperesources/chicagoflf.ttf') format('truetype'),
+         url('Jettai.pro.hyperesources/chicagoflf.svg#chicagoflfregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+</style> 
+
+<!-- required for the Parallax effect -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<!-- end copy -->
+  
+<style>
+  @keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+      text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000, 0 0 70px #FF0000, 0 0 80px #FF0000, 0 0 100px #FF0000, 0 0 150px #FF0000;
+      color: red;
+    }
+    20%, 24%, 55% {
+      text-shadow: none;
+      color: black;
+    }
+  }
+  .flicker {
+    animation: flicker 1s infinite;
+  }
+</style>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var target = document.getElementById('flickerMessage');
+    target.classList.add('flicker');
+    target.style.display = 'block'; // Make the div visible always for testing
+  });
+</script>
+
+</head>
+  <body>
+	<!-- copy these lines to your document: -->
+
+	<div id="jettai_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:100%;height:3800px;overflow:hidden;">
+		<script type="text/javascript" charset="utf-8" src="Jettai.pro.hyperesources/jettai_hype_generated_script.js?80495"></script>
+	</div>
+
+	<!-- end copy -->
+	
+
+
+	<!-- text content for search engines: -->
+
+	<div style="display:none" aria-hidden=true>
+
+		<div></div>
+		<div>Start a</div>
+		<div>Start A Revolution</div>
+		<div>Evolution</div>
+		<div>revolution</div>
+		<div>Go $Enjoy Yourself!</div>
+		<div>Jettai.Pro</div>
+
+	</div>
+
+	<!-- end text content: -->
+
+  
+<div id="flickerMessage" style="text-align: center; font-size: 24px; color: black; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
+  It's time to wake up.<br>It's time for Revolution.
+</div>
+
+</body>
+</html>
