@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#07080b" />
   <title>JETTAI — Signal Before the Sirens</title>
-  <meta name="description" content="JETTAI is a high-signal news hub for pattern recognition, accountability, and memory — free for now." />
+  <meta name="description" content="JETTAI is a high-signal news hub for pattern recognition, accountability, and memory — free now, insanely powerful later." />
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="JETTAI — Signal Before the Sirens">
-  <meta property="og:description" content="Less noise. More pattern. Early warning for reality.">
+  <meta property="og:description" content="Free now. Insanely powerful later. Signal before the sirens.">
   <meta property="og:url" content="https://www.jettai.pro">
-  <meta property="og:image" content="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=JettyShare.png">
+  <!-- Swap this to your JETTAI logo PNG/JPG when you have it -->
+  <meta property="og:image" content="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cdefs%3E%3CradialGradient id='g' cx='30%25' cy='28%25' r='85%25'%3E%3Cstop offset='0%25' stop-color='%2378a0ff'/%3E%3Cstop offset='55%25' stop-color='%23ff78c8'/%3E%3Cstop offset='100%25' stop-color='%2378ffd6'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='64' fill='%2307080b'/%3E%3Crect x='18' y='18' width='220' height='220' rx='56' fill='url(%23g)' opacity='.18'/%3E%3Crect x='18' y='18' width='220' height='220' rx='56' fill='none' stroke='rgba(255,255,255,.22)' stroke-width='6'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial' font-size='82' font-weight='700' fill='%23e9ecf1' letter-spacing='6'%3EJ%3C/text%3E%3C/svg%3E" />
 
@@ -182,7 +183,7 @@
       color:transparent;
       text-shadow: 0 0 20px rgba(120,160,255,.12);
     }
-    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:58ch}
+    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:60ch}
 
     .hl{
       padding:0 .25em;
@@ -450,6 +451,23 @@
 
     .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
     .small{color:rgba(167,176,192,.86); font-size:12px}
+    .small a{color:rgba(233,236,241,.86); text-decoration:none}
+    .small a:hover{text-decoration:underline}
+
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      z-index:120;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(10,12,18,.78);
+      backdrop-filter: blur(16px);
+      border-radius:16px;
+      padding:10px 12px;
+      color:rgba(233,236,241,.92);
+      box-shadow: var(--shadow);
+      font-size:13px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .toast[hidden]{display:none}
 
     .modal{
       position:fixed; inset:0; z-index:90;
@@ -528,12 +546,12 @@
       <a href="#signals">Signals</a>
       <a href="#mutiny">Mutiny</a>
       <a href="#about">About</a>
-      <a href="#future">Future</a>
+      <a href="#future">Subscriptions</a>
     </nav>
 
     <div class="cta">
       <button class="btn ghost" id="btnNotify">Get Updates</button>
-      <button class="btn solid" id="btnSupport" disabled>Support</button>
+      <button class="btn solid" id="btnSupport" disabled>Subscriptions Soon</button>
     </div>
   </header>
 
@@ -548,7 +566,8 @@
         <p class="lede">
           JETTAI is a <span class="hl strong">high-signal</span> news hub that surfaces what’s about to matter —
           before the narrative hardens. Built for <span class="hl">pattern recognition</span>,
-          <span class="hl">accountability</span>, and <span class="hl">memory</span>. Free right now.
+          <span class="hl">accountability</span>, and <span class="hl">memory</span>.
+          <span class="hl strong">Free now.</span> <span class="hl">Insanely powerful later.</span>
         </p>
 
         <div class="heroStats">
@@ -562,7 +581,7 @@
           </div>
           <div class="stat">
             <div class="statNum">Free</div>
-            <div class="statLabel">Right now</div>
+            <div class="statLabel">Subscriptions to come</div>
           </div>
         </div>
 
@@ -573,7 +592,7 @@
         </div>
 
         <div class="fineprint">
-          No ads. No rage bait. No dopamine farming. Just receipts and signal.
+          No rage bait. No dopamine farming. Just receipts and signal.
         </div>
       </div>
 
@@ -627,8 +646,7 @@
         <div class="mutinyCard">
           <div class="mutinyBrand">
             <div class="mutinyMark" aria-hidden="true">
-              <video autoplay muted loop playsinline preload="metadata"
-                poster="https://bafybeiepo6imnnollb3p54idu2yse3qpalyq5x5de7nw4ipnbh3a5ytsc4.ipfs.dweb.link?filename=The%20mutiny%20report.png">
+              <video autoplay muted loop playsinline preload="metadata">
                 <source src="https://bafybeigpgpxmjqrejctw32zvke3a7m2xkqbolbpwn3jxjt5zj4vt7qlb2q.ipfs.dweb.link?filename=MutinyAnimatedLogo.mp4" type="video/mp4">
               </video>
             </div>
@@ -649,8 +667,7 @@
         </div>
 
         <div class="mutinyMedia">
-          <video class="badgeVideo" autoplay muted loop playsinline preload="metadata"
-            poster="https://bafybeiepo6imnnollb3p54idu2yse3qpalyq5x5de7nw4ipnbh3a5ytsc4.ipfs.dweb.link?filename=The%20mutiny%20report.png">
+          <video class="badgeVideo" autoplay muted loop playsinline preload="metadata">
             <source src="https://bafybeigpgpxmjqrejctw32zvke3a7m2xkqbolbpwn3jxjt5zj4vt7qlb2q.ipfs.dweb.link?filename=MutinyAnimatedLogo.mp4" type="video/mp4">
           </video>
           <div class="mutinyOverlay"></div>
@@ -698,35 +715,39 @@
 
     <section id="future" class="section">
       <div class="sectionHead">
-        <h2>Free now. Built to monetize later.</h2>
-        <p>Nothing paywalled today — but the structure is here when you want it.</p>
+        <h2>Free now. Subscriptions to come.</h2>
+        <p>Today: open access. Later: tools that hit like a hammer.</p>
       </div>
 
       <div class="threeCol">
         <div class="panel">
-          <h3>Support Tier</h3>
-          <p>Member perks later: early briefs, deep dives, archives, and tools.</p>
-          <button class="btn solid" disabled>Coming soon</button>
+          <h3>Early Access Briefs</h3>
+          <p>Subscription tier later: early drops, clean summaries, citations, and context you can use.</p>
+          <button class="btn solid" disabled>Subscriptions Soon</button>
         </div>
         <div class="panel">
-          <h3>Signal Briefs</h3>
-          <p>Weekly dispatch. Clean citations. No fluff. Built for sharing.</p>
-          <button class="btn ghost" disabled>Coming soon</button>
+          <h3>Signal Tools</h3>
+          <p>Later: trackers, timelines, “who benefited” maps, and searchable archives.</p>
+          <button class="btn ghost" disabled>Coming Soon</button>
         </div>
         <div class="panel">
-          <h3>Tooling</h3>
-          <p>Later: trackers, timelines, “who benefited” maps, and research bundles.</p>
-          <button class="btn ghost" disabled>Coming soon</button>
+          <h3>Research Bundles</h3>
+          <p>Later: curated dossiers with sources, clips, and receipts—ready for creators.</p>
+          <button class="btn ghost" disabled>Coming Soon</button>
         </div>
       </div>
 
       <div class="legal">
         <div class="small">
-          © <span id="year"></span> JETTAI. Links go to original publishers.
+          © <span id="year"></span> JETTAI · <a href="https://jamkillerproductions.io" target="_blank" rel="noreferrer">Jam Killer Productions LLC</a>
         </div>
       </div>
     </section>
   </main>
+
+  <div class="toast" id="toast" hidden>
+    <span>Update request received.</span>
+  </div>
 
   <div class="modal" id="modal" hidden>
     <div class="modalCard">
@@ -736,15 +757,19 @@
       </div>
 
       <p class="modalText">
-        Free for now. Drop your email and you’ll get occasional signal drops.
+        Drop your email. You’ll get occasional signal drops. No spam.
       </p>
 
-      <form id="notifyForm" class="form">
-        <input id="email" type="email" placeholder="you@domain.com" required />
+      <form id="notifyForm" class="form" action="https://formsubmit.co/fletcher@jamkillerproductions.io" method="POST">
+        <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+        <input type="hidden" name="_subject" value="JETTAI — Get Updates Signup" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="true" />
+        <input type="hidden" name="_next" value="https://www.jettai.pro/?sent=1" />
         <button class="btn solid" type="submit">Notify me</button>
       </form>
 
-      <div class="modalFine">Stored locally for now.</div>
+      <div class="modalFine">If this is your first submission, you may be asked to confirm the inbox.</div>
     </div>
   </div>
 
@@ -772,7 +797,7 @@
       modal: document.getElementById("modal"),
       modalClose: document.getElementById("modalClose"),
       notifyForm: document.getElementById("notifyForm"),
-      email: document.getElementById("email")
+      toast: document.getElementById("toast")
     };
 
     const state = { items: [], filter: "all", query: "" };
@@ -916,6 +941,13 @@
       renderCards();
     }
 
+    function toast(msg) {
+      els.toast.querySelector("span").textContent = msg;
+      els.toast.hidden = false;
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
+    }
+
     function bindUI() {
       els.pills.forEach((p) => {
         p.addEventListener("click", () => {
@@ -935,20 +967,11 @@
 
       els.btnNotify.addEventListener("click", () => {
         els.modal.hidden = false;
-        setTimeout(() => els.email?.focus(), 50);
+        setTimeout(() => document.getElementById("email")?.focus(), 50);
       });
 
       els.modalClose.addEventListener("click", () => (els.modal.hidden = true));
       els.modal.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
-
-      els.notifyForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const val = (els.email.value || "").trim();
-        if (!val) return;
-        localStorage.setItem("jettai_notify_email", val);
-        els.modal.hidden = true;
-        alert("Saved.");
-      });
     }
 
     function startField() {
@@ -1044,8 +1067,8 @@
       els.year.textContent = String(new Date().getFullYear());
       els.statSources.textContent = String(FEEDS.length);
 
-      const savedEmail = localStorage.getItem("jettai_notify_email");
-      if (savedEmail && els.email) els.email.value = savedEmail;
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("sent") === "1") toast("Update request received.");
 
       bindUI();
       startField();
