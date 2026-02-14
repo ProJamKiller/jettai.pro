@@ -1,69 +1,1014 @@
-<!DOCTYPE html>
-<html>
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
-	<title>Jettai</title>
-	<style>
-		html {
-			height:100%;
-		}
-		body {
-			background-color:#000;
-			margin:0;
-			height:100%;
-		}
-	</style>
-	<!-- copy these lines to your document head: -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07080b" />
+  <title>JETTAI — Signal Before the Sirens</title>
+  <meta name="description" content="JETTAI is a high-signal news hub for pattern recognition, accountability, and memory — free for now." />
 
-	<meta name="viewport" content="user-scalable=yes, width=800" />
-	<style> @font-face {
-    font-family: 'chicagoflfregular';
-    src: url('Jettai.pro.hyperesources/chicagoflf.eot');
-    src: url('Jettai.pro.hyperesources/chicagoflf.eot?#iefix') format('embedded-opentype'),
-         url('Jettai.pro.hyperesources/chicagoflf.woff2') format('woff2'),
-         url('Jettai.pro.hyperesources/chicagoflf.woff') format('woff'),
-         url('Jettai.pro.hyperesources/chicagoflf.ttf') format('truetype'),
-         url('Jettai.pro.hyperesources/chicagoflf.svg#chicagoflfregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-</style> 
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="JETTAI — Signal Before the Sirens">
+  <meta property="og:description" content="Less noise. More pattern. Early warning for reality.">
+  <meta property="og:url" content="https://www.jettai.pro">
 
-<!-- required for the Parallax effect -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<meta name="author" content="JamKiller Productions">
-<meta name="description" content="A JamKiller joint">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
-	<!-- end copy -->
-  </head>
-  <body>
-	<!-- copy these lines to your document: -->
+  <style>
+    :root{
+      --bg:#07080b;
+      --fg:#e9ecf1;
+      --muted:#a7b0c0;
+      --line:rgba(255,255,255,.12);
+      --line2:rgba(255,255,255,.18);
+      --shadow: 0 22px 70px rgba(0,0,0,.60);
+      --serif: "DM Serif Display", serif;
+      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --a1: rgba(120,160,255,.95);
+      --a2: rgba(255,120,200,.95);
+      --a3: rgba(120,255,214,.85);
+    }
 
-	<div id="jettai_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:100%;height:3800px;overflow:hidden;">
-		<script type="text/javascript" charset="utf-8" src="Jettai.pro.hyperesources/jettai_hype_generated_script.js?79166"></script>
-	</div>
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--fg);
+      background:var(--bg);
+      overflow-x:hidden;
+    }
 
-	<!-- end copy -->
-	
+    /* Background */
+    #field{position:fixed; inset:0; width:100%; height:100%; z-index:-4}
+    .vignette{
+      position:fixed; inset:0; z-index:-3;
+      background:
+        radial-gradient(1200px 800px at 50% 10%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(900px 600px at 15% 80%, rgba(120,160,255,.09), transparent 55%),
+        radial-gradient(900px 700px at 85% 70%, rgba(255,120,200,.07), transparent 55%),
+        radial-gradient(900px 700px at 55% 85%, rgba(120,255,214,.06), transparent 55%),
+        radial-gradient(900px 900px at 50% 50%, transparent 50%, rgba(0,0,0,.72) 100%);
+      pointer-events:none;
+    }
+    .grain{
+      position:fixed; inset:0; z-index:-2;
+      opacity:.10;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
 
+    /* Topbar */
+    header.topbar{
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 20px;
+      border-bottom:1px solid var(--line);
+      background:rgba(7,8,11,.58);
+      backdrop-filter: blur(16px);
+    }
+    .brand{display:flex; align-items:center; gap:14px}
+    .sigil{
+      width:40px; height:40px; border-radius:14px;
+      border:1px solid var(--line2);
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 14px 38px rgba(0,0,0,.42);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 45%),
+        linear-gradient(135deg, rgba(120,160,255,.18), rgba(255,120,200,.10));
+    }
+    .sigil::after{
+      content:"";
+      position:absolute; inset:-50%;
+      background: conic-gradient(from 180deg, rgba(120,160,255,.0), rgba(120,160,255,.20), rgba(255,120,200,.20), rgba(120,255,214,.16), rgba(120,160,255,.0));
+      animation: spin 7.5s linear infinite;
+      opacity:.9;
+      mix-blend-mode: screen;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-	<!-- text content for search engines: -->
+    .sigil video{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:.82;
+      filter: contrast(1.05) saturate(1.1);
+    }
 
-	<div style="display:none" aria-hidden=true>
+    .brandtext .wordmark{
+      font-family:var(--serif);
+      letter-spacing:.08em;
+      font-size:18px;
+    }
+    .brandtext .tagline{color:var(--muted); font-size:12px; margin-top:2px}
 
-		<div></div>
-		<div>Start a</div>
-		<div>Start A Revolution</div>
-		<div>Evolution</div>
-		<div>revolution</div>
-		<div>Revelution!</div>
-		<div>Go $Enjoy Yourself!</div>
-		<div>Jettai.Pro</div>
+    nav.nav{display:flex; gap:14px}
+    nav.nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:12px;
+      transition: all .18s ease;
+    }
+    nav.nav a:hover{color:var(--fg); background:rgba(255,255,255,.06)}
+    .cta{display:flex; gap:10px}
 
-	</div>
+    /* Buttons */
+    .btn{
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--fg);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:13px;
+      cursor:pointer;
+      transition: all .18s ease;
+      user-select:none;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn.solid{
+      border-color:rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(120,160,255,.25), rgba(255,120,200,.18));
+      box-shadow: 0 14px 44px rgba(0,0,0,.40);
+    }
+    .btn.solid::after{
+      content:"";
+      position:absolute; inset:-60% -40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 55%);
+      transform: rotate(18deg);
+      opacity:.75;
+      transition: opacity .2s ease;
+      pointer-events:none;
+    }
+    .btn.ghost:hover{background:rgba(255,255,255,.06)}
+    .btn.solid:hover{transform: translateY(-1px); border-color:rgba(255,255,255,.26)}
+    .btn.solid:hover::after{opacity:1}
+    .btn:disabled{opacity:.45; cursor:not-allowed}
 
-	<!-- end text content: -->
+    main.wrap{max-width:1120px; margin:0 auto; padding:28px 20px 90px}
 
-  </body>
+    /* Hero */
+    section.hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      padding:22px 0 8px;
+      align-items:stretch;
+    }
+    .hero h1{
+      font-family:var(--serif);
+      font-size:54px;
+      line-height:1.01;
+      margin:0 0 14px;
+    }
+    .accent{
+      background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow: 0 0 20px rgba(120,160,255,.12);
+    }
+    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:56ch}
+
+    .heroStats{display:flex; gap:12px; margin:18px 0 14px; flex-wrap:wrap}
+    .stat{
+      min-width:170px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      box-shadow: 0 10px 28px rgba(0,0,0,.18);
+    }
+    .statNum{font-size:20px; font-weight:600}
+    .statLabel{color:var(--muted); font-size:12px; margin-top:4px}
+
+    .heroActions{display:flex; gap:10px; margin:12px 0 10px; flex-wrap:wrap}
+    .fineprint{color:rgba(233,236,241,.75); font-size:12px}
+
+    /* Glass card */
+    .glassCard{
+      border:1px solid var(--line);
+      border-radius:20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow: var(--shadow);
+      padding:16px;
+      overflow:hidden;
+      position:relative;
+    }
+    .glassCard::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(120,160,255,.35), rgba(255,120,200,.22), rgba(120,255,214,.18));
+      filter: blur(18px);
+      opacity:.30;
+      pointer-events:none;
+    }
+    .glassTitle{
+      position:relative;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(233,236,241,.86);
+    }
+    .glassLine{position:relative; height:1px; background:var(--line); margin:10px 0 12px}
+    .glassBullets{position:relative; display:flex; flex-direction:column; gap:10px; min-height:190px}
+    .tick{
+      padding:10px 10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(0,0,0,.22);
+      color:rgba(233,236,241,.92);
+      animation: floatin .8s ease both;
+      transform: translateZ(0);
+    }
+    @keyframes floatin{from{opacity:0; transform: translateY(10px)} to{opacity:1; transform: translateY(0)}}
+    .glassFooter{position:relative; margin-top:12px; color:var(--muted); font-size:12px; display:flex; align-items:center; gap:8px}
+    .dot{
+      width:8px; height:8px; border-radius:99px;
+      background:rgba(120,160,255,.95);
+      box-shadow:0 0 26px rgba(120,160,255,.70);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.35); opacity:1}
+    }
+
+    /* Sections */
+    section.section{padding:42px 0 0}
+    .sectionHead h2{margin:0 0 8px; font-family:var(--serif); font-size:34px}
+    .sectionHead p{margin:0 0 18px; color:var(--muted)}
+
+    .toolbar{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .pillset{display:flex; gap:8px; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:12px;
+      cursor:pointer;
+      transition: all .18s ease;
+    }
+    .pill:hover{color:var(--fg); background:rgba(255,255,255,.06)}
+    .pill.active{
+      color:var(--fg);
+      background:rgba(255,255,255,.09);
+      border-color:rgba(255,255,255,.20);
+    }
+
+    .search input{
+      width:min(360px, 90vw);
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(0,0,0,.28);
+      color:var(--fg);
+      padding:11px 12px;
+      outline:none;
+    }
+    .search input::placeholder{color:rgba(167,176,192,.75)}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.22);
+      min-height:160px;
+      position:relative;
+      overflow:hidden;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(135deg, rgba(120,160,255,.18), rgba(255,120,200,.12), rgba(120,255,214,.10));
+      opacity:0;
+      transition: opacity .18s ease;
+      pointer-events:none;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color:rgba(255,255,255,.20);
+      background:rgba(255,255,255,.05);
+    }
+    .card:hover::before{opacity:.35}
+    .cardTop{position:relative; display:flex; justify-content:space-between; align-items:center; gap:10px}
+    .source{font-size:12px; color:rgba(233,236,241,.80)}
+    .pillTag{
+      font-size:11px;
+      padding:6px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      color:rgba(233,236,241,.86);
+      background:rgba(0,0,0,.18);
+      white-space:nowrap;
+    }
+    .title{position:relative; margin:10px 0 8px; font-size:15px; line-height:1.35; font-weight:600}
+    .title a{color:var(--fg); text-decoration:none}
+    .title a:hover{text-decoration:underline}
+    .meta{position:relative; font-size:12px; color:var(--muted); line-height:1.4}
+    .cardBottom{position:relative; margin-top:10px; display:flex; justify-content:space-between; align-items:end; gap:10px}
+    .time{font-size:11px; color:rgba(167,176,192,.90)}
+    .read{
+      font-size:12px; color:rgba(233,236,241,.92);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.10);
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(0,0,0,.22);
+    }
+    .read:hover{background:rgba(255,255,255,.06)}
+    .skeleton{
+      background: linear-gradient(90deg, rgba(255,255,255,.03), rgba(255,255,255,.09), rgba(255,255,255,.03));
+      background-size: 200% 100%;
+      animation: shimmer 1.15s infinite linear;
+    }
+    @keyframes shimmer{0%{background-position: 0% 0%} 100%{background-position: -200% 0%}}
+
+    /* Mutiny */
+    .mutinyWrap{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:stretch}
+    .mutinyCard{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .mutinyCard::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(700px 280px at 20% 20%, rgba(120,160,255,.16), transparent 55%),
+                  radial-gradient(700px 280px at 80% 70%, rgba(255,120,200,.12), transparent 60%);
+      pointer-events:none;
+    }
+    .mutinyBrand{position:relative; display:flex; gap:12px; align-items:center}
+    .mutinyLogo{
+      width:58px; height:58px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      object-fit:contain;
+    }
+    .mutinyTitle{font-family:var(--serif); font-size:22px}
+    .mutinySub{color:var(--muted); font-size:13px; margin-top:3px}
+    .mutinyActions{position:relative; display:flex; gap:10px; margin:14px 0 10px; flex-wrap:wrap}
+    .mutinyNote{position:relative; color:rgba(233,236,241,.80); font-size:13px; line-height:1.5}
+
+    .mutinyMedia{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.22);
+      position:relative;
+      overflow:hidden;
+      min-height:240px;
+    }
+    .mutinyMedia .cardTop{display:flex; justify-content:space-between; align-items:center; gap:10px}
+    .badgeVideo{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:.35;
+      filter: contrast(1.05) saturate(1.1);
+      transform: scale(1.02);
+    }
+    .mutinyOverlay{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(7,8,11,.30), rgba(7,8,11,.72));
+      pointer-events:none;
+    }
+    .mutinyMediaInner{position:relative; margin-top:10px}
+    .mutinyMediaInner h3{
+      margin:0 0 6px;
+      font-family:var(--serif);
+      font-size:22px;
+      line-height:1.1;
+    }
+    .mutinyMediaInner p{margin:0 0 12px; color:rgba(233,236,241,.80); line-height:1.5; font-size:13px}
+
+    /* About/Future */
+    .twoCol{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    .threeCol{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
+    .panel{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:16px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+    }
+    .panel h3{margin:0 0 8px; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,241,.86)}
+    .panel p{margin:0 0 12px; color:var(--muted); line-height:1.55}
+
+    .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
+    .small{color:rgba(167,176,192,.86); font-size:12px}
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0; z-index:90;
+      background:rgba(0,0,0,.55);
+      display:grid; place-items:center;
+      padding:22px;
+    }
+    .modal[hidden]{display:none}
+    .modalCard{
+      width:min(520px, 92vw);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:20px;
+      background:rgba(10,12,18,.84);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .modalTop{display:flex; justify-content:space-between; align-items:center}
+    .modalTitle{font-family:var(--serif); font-size:22px}
+    .x{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:var(--fg);
+      padding:8px 10px;
+      border-radius:14px;
+      cursor:pointer;
+    }
+    .modalText{color:var(--muted); line-height:1.55}
+    form.form{display:flex; gap:10px; flex-wrap:wrap}
+    form.form input{
+      flex:1; min-width:220px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      background:rgba(0,0,0,.28);
+      color:var(--fg);
+      padding:11px 12px;
+      outline:none;
+    }
+    .modalFine{margin-top:10px; color:rgba(167,176,192,.86); font-size:12px}
+
+    /* Small screens */
+    @media (max-width: 980px){
+      section.hero{grid-template-columns: 1fr}
+      .grid{grid-template-columns: 1fr}
+      .twoCol{grid-template-columns: 1fr}
+      .threeCol{grid-template-columns: 1fr}
+      .mutinyWrap{grid-template-columns: 1fr}
+      nav.nav{display:none}
+      .hero h1{font-size:44px}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .sigil::after, .dot, .tick, #field{animation:none !important}
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="sigil" aria-hidden="true">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="brandtext">
+        <div class="wordmark">JETTAI</div>
+        <div class="tagline">Signal before the sirens.</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#signals">Signals</a>
+      <a href="#mutiny">Mutiny</a>
+      <a href="#about">About</a>
+      <a href="#future">Future</a>
+    </nav>
+
+    <div class="cta">
+      <button class="btn ghost" id="btnNotify">Get Updates</button>
+      <button class="btn solid" id="btnSupport" disabled>Support</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h1>
+          Intelligence, not outrage.
+          <span class="accent">Signal</span>, not noise.
+        </h1>
+        <p class="lede">
+          JETTAI is a high-signal news hub that surfaces what’s about to matter — before the narrative hardens.
+          Built for pattern recognition, accountability, and memory. Free right now.
+        </p>
+
+        <div class="heroStats">
+          <div class="stat">
+            <div class="statNum" id="statItems">—</div>
+            <div class="statLabel">Fresh items pulled</div>
+          </div>
+          <div class="stat">
+            <div class="statNum" id="statSources">—</div>
+            <div class="statLabel">Signal sources</div>
+          </div>
+          <div class="stat">
+            <div class="statNum">Free</div>
+            <div class="statLabel">Right now</div>
+          </div>
+        </div>
+
+        <div class="heroActions">
+          <a class="btn solid" href="#signals">View Signals</a>
+          <button class="btn ghost" id="btnRefresh">Refresh</button>
+          <a class="btn ghost" href="#mutiny">Mutiny Report</a>
+        </div>
+
+        <div class="fineprint">
+          No ads. No rage bait. No dopamine farming. Just receipts and signal.
+        </div>
+      </div>
+
+      <div aria-hidden="true">
+        <div class="glassCard">
+          <div class="glassTitle">LIVE SIGNAL</div>
+          <div class="glassLine"></div>
+          <div class="glassBullets" id="ticker">
+            <div class="tick">Loading…</div>
+          </div>
+          <div class="glassFooter">
+            <span class="dot"></span> updated <span id="updatedAt">—</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="signals" class="section">
+      <div class="sectionHead">
+        <h2>Signals</h2>
+        <p>Important stories from high-signal sources. Click through to the original reporting.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="pillset" role="tablist" aria-label="Filters">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="law">Law</button>
+          <button class="pill" data-filter="gov">Gov</button>
+          <button class="pill" data-filter="finance">Finance</button>
+          <button class="pill" data-filter="investigations">Investigations</button>
+        </div>
+        <div class="search">
+          <input id="q" type="search" placeholder="Search signals…" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="grid" id="cards">
+        <div class="skeleton card"></div>
+        <div class="skeleton card"></div>
+        <div class="skeleton card"></div>
+      </div>
+    </section>
+
+    <section id="mutiny" class="section">
+      <div class="sectionHead">
+        <h2>Mutiny Report</h2>
+        <p>The voice layer. Gonzo, accountable, and allergic to polite lies.</p>
+      </div>
+
+      <div class="mutinyWrap">
+        <div class="mutinyCard">
+          <div class="mutinyBrand">
+            <img class="mutinyLogo"
+              src="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4"
+              alt="The Mutiny Report"
+              style="display:none"
+            />
+            <div>
+              <div class="mutinyTitle">The Mutiny Report</div>
+              <div class="mutinySub">Independent commentary + pattern recognition.</div>
+            </div>
+          </div>
+
+          <div class="mutinyActions">
+            <a class="btn solid" href="https://mutinyreport.com" target="_blank" rel="noreferrer">MutinyReport.com</a>
+            <a class="btn ghost" href="https://www.youtube.com/@TheMutinyReport" target="_blank" rel="noreferrer">YouTube</a>
+          </div>
+
+          <div class="mutinyNote">
+            JETTAI surfaces the signal. Mutiny turns it into human language.
+          </div>
+        </div>
+
+        <div class="mutinyMedia">
+          <video class="badgeVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4" type="video/mp4">
+          </video>
+          <div class="mutinyOverlay"></div>
+
+          <div class="cardTop">
+            <div class="source">Mutiny</div>
+            <div class="pillTag">Live</div>
+          </div>
+
+          <div class="mutinyMediaInner">
+            <h3>Truth with teeth.</h3>
+            <p>New episodes, sharp commentary, and the kind of analysis that doesn’t apologize for being awake.</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn solid" href="https://www.youtube.com/@TheMutinyReport" target="_blank" rel="noreferrer">Watch on YouTube</a>
+              <a class="btn ghost" href="https://mutinyreport.com" target="_blank" rel="noreferrer">Go to site</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="sectionHead">
+        <h2>What JETTAI is</h2>
+        <p>Not a news site. A signal system.</p>
+      </div>
+
+      <div class="twoCol">
+        <div class="panel">
+          <h3>Pattern</h3>
+          <p>
+            Stories don’t matter because they’re loud. They matter because they connect.
+            JETTAI is built to spot motion under the surface — money, influence, law, and narrative drift.
+          </p>
+        </div>
+        <div class="panel">
+          <h3>Memory</h3>
+          <p>
+            Power survives by betting you’ll forget.
+            JETTAI is designed to preserve context and keep receipts.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="future" class="section">
+      <div class="sectionHead">
+        <h2>Free now. Built to monetize later.</h2>
+        <p>Nothing paywalled today — but the structure is here when you want it.</p>
+      </div>
+
+      <div class="threeCol">
+        <div class="panel">
+          <h3>Support Tier</h3>
+          <p>Member perks later: early briefs, deep dives, archives, and tools.</p>
+          <button class="btn solid" disabled>Coming soon</button>
+        </div>
+        <div class="panel">
+          <h3>Signal Briefs</h3>
+          <p>Weekly dispatch. Clean citations. No fluff. Built for sharing.</p>
+          <button class="btn ghost" disabled>Coming soon</button>
+        </div>
+        <div class="panel">
+          <h3>Tooling</h3>
+          <p>Later: trackers, timelines, “who benefited” maps, and research bundles.</p>
+          <button class="btn ghost" disabled>Coming soon</button>
+        </div>
+      </div>
+
+      <div class="legal">
+        <div class="small">
+          © <span id="year"></span> JETTAI. Links go to original publishers.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modalCard">
+      <div class="modalTop">
+        <div class="modalTitle">Get Updates</div>
+        <button class="x" id="modalClose" aria-label="Close">✕</button>
+      </div>
+
+      <p class="modalText">
+        Free for now. Drop your email and you’ll get occasional signal drops.
+      </p>
+
+      <form id="notifyForm" class="form">
+        <input id="email" type="email" placeholder="you@domain.com" required />
+        <button class="btn solid" type="submit">Notify me</button>
+      </form>
+
+      <div class="modalFine">
+        Stored locally for now.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MUTINY_SITE = "https://mutinyreport.com";
+    const MUTINY_YOUTUBE = "https://www.youtube.com/@TheMutinyReport";
+
+    const FEEDS = [
+      { name: "ProPublica", tag: "investigations", url: "https://www.propublica.org/feeds/propublica/main" },
+      { name: "DOJ News", tag: "gov", url: "https://www.justice.gov/news/rss?m=1" },
+      { name: "SEC Press Releases", tag: "finance", url: "https://www.sec.gov/news/pressreleases.rss" },
+      { name: "US Courts News", tag: "law", url: "https://news.uscourts.gov/feed" }
+    ];
+
+    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+    const els = {
+      cards: document.getElementById("cards"),
+      q: document.getElementById("q"),
+      pills: Array.from(document.querySelectorAll(".pill")),
+      ticker: document.getElementById("ticker"),
+      updatedAt: document.getElementById("updatedAt"),
+      statItems: document.getElementById("statItems"),
+      statSources: document.getElementById("statSources"),
+      year: document.getElementById("year"),
+      btnRefresh: document.getElementById("btnRefresh"),
+      btnNotify: document.getElementById("btnNotify"),
+      modal: document.getElementById("modal"),
+      modalClose: document.getElementById("modalClose"),
+      notifyForm: document.getElementById("notifyForm"),
+      email: document.getElementById("email")
+    };
+
+    const state = { items: [], filter: "all", query: "" };
+
+    const escapeHtml = (str) => String(str || "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    const cleanSummary = (s) => {
+      if (!s) return "";
+      const txt = s.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+      return txt.length > 180 ? txt.slice(0, 180).trim() + "…" : txt;
+    };
+
+    const fmtTime = (dateStr) => {
+      const t = Date.parse(dateStr || "");
+      if (!t) return "—";
+      return new Date(t).toLocaleString([], { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+    };
+
+    const nowStamp = () => new Date().toLocaleString([], { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+
+    function normalizeItem(item, sourceName, tag) {
+      return {
+        id: item.guid || item.link || (sourceName + ":" + item.title),
+        title: item.title || "Untitled",
+        link: item.link || "#",
+        published: item.pubDate || item.published || item.date || "",
+        summary: item.description || item.content || "",
+        source: sourceName,
+        tag
+      };
+    }
+
+    function setTicker(items) {
+      const top = items.slice(0, 6);
+      els.ticker.innerHTML = top.map((it, idx) =>
+        `<div class="tick" style="animation-delay:${idx * 70}ms">${escapeHtml(it.title)}</div>`
+      ).join("") || `<div class="tick">No items yet.</div>`;
+    }
+
+    function renderCards() {
+      const q = state.query.trim().toLowerCase();
+      const filtered = state.items.filter((it) => {
+        const matchTag = state.filter === "all" ? true : it.tag === state.filter;
+        if (!matchTag) return false;
+        if (!q) return true;
+        return (it.title + " " + it.summary + " " + it.source).toLowerCase().includes(q);
+      });
+
+      if (!filtered.length) {
+        els.cards.innerHTML = `
+          <div class="card">
+            <div class="cardTop">
+              <div class="source">JETTAI</div>
+              <div class="pillTag">No results</div>
+            </div>
+            <div class="title">Nothing matched your filter/search.</div>
+            <div class="meta">Try “All” or clear the search box.</div>
+          </div>`;
+        els.statItems.textContent = "0";
+        return;
+      }
+
+      els.cards.innerHTML = filtered.slice(0, 36).map((it) => {
+        const t = fmtTime(it.published);
+        const sum = cleanSummary(it.summary);
+        return `
+          <article class="card" data-tag="${it.tag}">
+            <div class="cardTop">
+              <div class="source">${escapeHtml(it.source)}</div>
+              <div class="pillTag">${escapeHtml(it.tag)}</div>
+            </div>
+            <div class="title"><a href="${it.link}" target="_blank" rel="noreferrer">${escapeHtml(it.title)}</a></div>
+            <div class="meta">${escapeHtml(sum || "—")}</div>
+            <div class="cardBottom">
+              <div class="time">${escapeHtml(t)}</div>
+              <a class="read" href="${it.link}" target="_blank" rel="noreferrer">Read</a>
+            </div>
+          </article>`;
+      }).join("");
+
+      els.statItems.textContent = String(filtered.length);
+    }
+
+    async function fetchFeed(feed) {
+      const url = RSS2JSON + encodeURIComponent(feed.url);
+      const res = await fetch(url, { headers: { "Accept":"application/json" }});
+      if (!res.ok) throw new Error("feed");
+      const data = await res.json();
+      const items = (data.items || []).map((x) => normalizeItem(x, feed.name, feed.tag));
+      return items;
+    }
+
+    async function refreshAll() {
+      els.cards.innerHTML = `<div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div>`;
+      const results = [];
+      for (const f of FEEDS) {
+        try {
+          const items = await fetchFeed(f);
+          results.push(...items);
+        } catch {
+          results.push({
+            id: "err:" + f.name,
+            title: `Could not load ${f.name} right now`,
+            link: f.url,
+            published: new Date().toISOString(),
+            summary: "",
+            source: f.name,
+            tag: f.tag
+          });
+        }
+      }
+
+      results.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
+      state.items = results;
+
+      els.statSources.textContent = String(FEEDS.length);
+      els.updatedAt.textContent = nowStamp();
+      setTicker(results);
+      renderCards();
+    }
+
+    function bindUI() {
+      els.pills.forEach((p) => {
+        p.addEventListener("click", () => {
+          els.pills.forEach((x) => x.classList.remove("active"));
+          p.classList.add("active");
+          state.filter = p.dataset.filter || "all";
+          renderCards();
+        });
+      });
+
+      els.q.addEventListener("input", () => {
+        state.query = els.q.value || "";
+        renderCards();
+      });
+
+      els.btnRefresh.addEventListener("click", refreshAll);
+
+      els.btnNotify.addEventListener("click", () => {
+        els.modal.hidden = false;
+        setTimeout(() => els.email?.focus(), 50);
+      });
+
+      els.modalClose.addEventListener("click", () => (els.modal.hidden = true));
+      els.modal.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
+
+      els.notifyForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const val = (els.email.value || "").trim();
+        if (!val) return;
+        localStorage.setItem("jettai_notify_email", val);
+        els.modal.hidden = true;
+        alert("Saved.");
+      });
+    }
+
+    function startField() {
+      const c = document.getElementById("field");
+      const ctx = c.getContext("2d", { alpha: true });
+      let w = 0, h = 0, dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      const stars = [];
+      const N = 150;
+
+      function resize() {
+        w = Math.floor(window.innerWidth);
+        h = Math.floor(window.innerHeight);
+        c.width = Math.floor(w * dpr);
+        c.height = Math.floor(h * dpr);
+        c.style.width = w + "px";
+        c.style.height = h + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function seed() {
+        stars.length = 0;
+        for (let i = 0; i < N; i++) {
+          stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.6 + 0.3,
+            vx: (Math.random() - 0.5) * 0.08,
+            vy: (Math.random() - 0.5) * 0.08,
+            p: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      let mx = w / 2, my = h / 2;
+      window.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+
+        const g = ctx.createRadialGradient(mx, my, 60, w / 2, h / 2, Math.max(w, h));
+        g.addColorStop(0, "rgba(120,160,255,0.10)");
+        g.addColorStop(0.42, "rgba(255,120,200,0.06)");
+        g.addColorStop(0.68, "rgba(120,255,214,0.05)");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+
+        for (let i = 0; i < stars.length; i++) {
+          const a = stars[i];
+          for (let j = i + 1; j < stars.length; j++) {
+            const b = stars[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 120) {
+              const alpha = (1 - dist / 120) * 0.11;
+              ctx.strokeStyle = `rgba(233,236,241,${alpha})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        for (const s of stars) {
+          s.p += 0.01;
+          s.x += s.vx + Math.cos(s.p) * 0.02;
+          s.y += s.vy + Math.sin(s.p) * 0.02;
+
+          if (s.x < -20) s.x = w + 20;
+          if (s.x > w + 20) s.x = -20;
+          if (s.y < -20) s.y = h + 20;
+          if (s.y > h + 20) s.y = -20;
+
+          ctx.fillStyle = "rgba(233,236,241,0.78)";
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      seed();
+      window.addEventListener("resize", () => { resize(); seed(); }, { passive: true });
+      requestAnimationFrame(draw);
+    }
+
+    (async function init() {
+      els.year.textContent = String(new Date().getFullYear());
+      els.statSources.textContent = String(FEEDS.length);
+
+      const savedEmail = localStorage.getItem("jettai_notify_email");
+      if (savedEmail && els.email) els.email.value = savedEmail;
+
+      bindUI();
+      startField();
+      await refreshAll();
+    })();
+  </script>
+</body>
 </html>
