@@ -26,9 +26,14 @@
       --shadow: 0 22px 70px rgba(0,0,0,.60);
       --serif: "DM Serif Display", serif;
       --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --a1: rgba(120,160,255,.95);
-      --a2: rgba(255,120,200,.95);
-      --a3: rgba(120,255,214,.85);
+
+      --a1: rgba(120,160,255,.96);
+      --a2: rgba(255,120,200,.96);
+      --a3: rgba(120,255,214,.88);
+
+      --hl1: rgba(120,160,255,.28);
+      --hl2: rgba(255,120,200,.22);
+      --hl3: rgba(120,255,214,.16);
     }
 
     *{box-sizing:border-box}
@@ -41,7 +46,6 @@
       overflow-x:hidden;
     }
 
-    /* Background */
     #field{position:fixed; inset:0; width:100%; height:100%; z-index:-4}
     .vignette{
       position:fixed; inset:0; z-index:-3;
@@ -50,7 +54,7 @@
         radial-gradient(900px 600px at 15% 80%, rgba(120,160,255,.09), transparent 55%),
         radial-gradient(900px 700px at 85% 70%, rgba(255,120,200,.07), transparent 55%),
         radial-gradient(900px 700px at 55% 85%, rgba(120,255,214,.06), transparent 55%),
-        radial-gradient(900px 900px at 50% 50%, transparent 50%, rgba(0,0,0,.72) 100%);
+        radial-gradient(900px 900px at 50% 50%, transparent 50%, rgba(0,0,0,.74) 100%);
       pointer-events:none;
     }
     .grain{
@@ -61,13 +65,12 @@
       mix-blend-mode: overlay;
     }
 
-    /* Topbar */
     header.topbar{
       position:sticky; top:0; z-index:50;
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 20px;
       border-bottom:1px solid var(--line);
-      background:rgba(7,8,11,.58);
+      background:rgba(7,8,11,.60);
       backdrop-filter: blur(16px);
     }
     .brand{display:flex; align-items:center; gap:14px}
@@ -86,16 +89,16 @@
       position:absolute; inset:-50%;
       background: conic-gradient(from 180deg, rgba(120,160,255,.0), rgba(120,160,255,.20), rgba(255,120,200,.20), rgba(120,255,214,.16), rgba(120,160,255,.0));
       animation: spin 7.5s linear infinite;
-      opacity:.9;
+      opacity:.92;
       mix-blend-mode: screen;
+      pointer-events:none;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
-
     .sigil video{
       position:absolute; inset:0;
       width:100%; height:100%;
       object-fit:cover;
-      opacity:.82;
+      opacity:.86;
       filter: contrast(1.05) saturate(1.1);
     }
 
@@ -118,7 +121,6 @@
     nav.nav a:hover{color:var(--fg); background:rgba(255,255,255,.06)}
     .cta{display:flex; gap:10px}
 
-    /* Buttons */
     .btn{
       border:1px solid var(--line);
       background:transparent;
@@ -138,7 +140,7 @@
     }
     .btn.solid{
       border-color:rgba(255,255,255,.18);
-      background: linear-gradient(135deg, rgba(120,160,255,.25), rgba(255,120,200,.18));
+      background: linear-gradient(135deg, rgba(120,160,255,.26), rgba(255,120,200,.18));
       box-shadow: 0 14px 44px rgba(0,0,0,.40);
     }
     .btn.solid::after{
@@ -157,7 +159,6 @@
 
     main.wrap{max-width:1120px; margin:0 auto; padding:28px 20px 90px}
 
-    /* Hero */
     section.hero{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -178,7 +179,23 @@
       color:transparent;
       text-shadow: 0 0 20px rgba(120,160,255,.12);
     }
-    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:56ch}
+    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:58ch}
+
+    .hl{
+      padding:0 .25em;
+      border-radius:.45em;
+      background:
+        linear-gradient(135deg, var(--hl1), var(--hl2), var(--hl3));
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 0 0 1px rgba(0,0,0,.18) inset, 0 12px 34px rgba(0,0,0,.20);
+    }
+    .hl.strong{
+      background:
+        linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.26), rgba(120,255,214,.20));
+      border-color: rgba(255,255,255,.14);
+    }
 
     .heroStats{display:flex; gap:12px; margin:18px 0 14px; flex-wrap:wrap}
     .stat{
@@ -195,7 +212,6 @@
     .heroActions{display:flex; gap:10px; margin:12px 0 10px; flex-wrap:wrap}
     .fineprint{color:rgba(233,236,241,.75); font-size:12px}
 
-    /* Glass card */
     .glassCard{
       border:1px solid var(--line);
       border-radius:20px;
@@ -244,7 +260,6 @@
       50%{transform:scale(1.35); opacity:1}
     }
 
-    /* Sections */
     section.section{padding:42px 0 0}
     .sectionHead h2{margin:0 0 8px; font-family:var(--serif); font-size:34px}
     .sectionHead p{margin:0 0 18px; color:var(--muted)}
@@ -347,8 +362,7 @@
     }
     @keyframes shimmer{0%{background-position: 0% 0%} 100%{background-position: -200% 0%}}
 
-    /* Mutiny */
-    .mutinyWrap{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px; align-items:stretch}
+    .mutinyWrap{display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:stretch}
     .mutinyCard{
       border:1px solid var(--line);
       border-radius:18px;
@@ -356,26 +370,37 @@
       padding:16px;
       position:relative;
       overflow:hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,.18);
     }
     .mutinyCard::before{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(700px 280px at 20% 20%, rgba(120,160,255,.16), transparent 55%),
-                  radial-gradient(700px 280px at 80% 70%, rgba(255,120,200,.12), transparent 60%);
+      background:
+        radial-gradient(700px 280px at 18% 18%, rgba(120,160,255,.18), transparent 55%),
+        radial-gradient(700px 280px at 82% 72%, rgba(255,120,200,.14), transparent 60%),
+        radial-gradient(700px 280px at 50% 90%, rgba(120,255,214,.10), transparent 62%);
       pointer-events:none;
     }
     .mutinyBrand{position:relative; display:flex; gap:12px; align-items:center}
-    .mutinyLogo{
+    .mutinyMark{
       width:58px; height:58px;
       border-radius:16px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.22);
-      object-fit:contain;
+      overflow:hidden;
+      position:relative;
+    }
+    .mutinyMark video{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:.92;
+      filter: contrast(1.06) saturate(1.12);
     }
     .mutinyTitle{font-family:var(--serif); font-size:22px}
     .mutinySub{color:var(--muted); font-size:13px; margin-top:3px}
     .mutinyActions{position:relative; display:flex; gap:10px; margin:14px 0 10px; flex-wrap:wrap}
-    .mutinyNote{position:relative; color:rgba(233,236,241,.80); font-size:13px; line-height:1.5}
+    .mutinyNote{position:relative; color:rgba(233,236,241,.82); font-size:13px; line-height:1.5}
 
     .mutinyMedia{
       border:1px solid var(--line);
@@ -385,32 +410,30 @@
       box-shadow: 0 12px 36px rgba(0,0,0,.22);
       position:relative;
       overflow:hidden;
-      min-height:240px;
+      min-height:260px;
     }
-    .mutinyMedia .cardTop{display:flex; justify-content:space-between; align-items:center; gap:10px}
     .badgeVideo{
       position:absolute; inset:0;
       width:100%; height:100%;
       object-fit:cover;
-      opacity:.35;
-      filter: contrast(1.05) saturate(1.1);
+      opacity:.40;
+      filter: contrast(1.06) saturate(1.12);
       transform: scale(1.02);
     }
     .mutinyOverlay{
       position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(7,8,11,.30), rgba(7,8,11,.72));
+      background: linear-gradient(180deg, rgba(7,8,11,.24), rgba(7,8,11,.76));
       pointer-events:none;
     }
     .mutinyMediaInner{position:relative; margin-top:10px}
     .mutinyMediaInner h3{
-      margin:0 0 6px;
+      margin:0 0 8px;
       font-family:var(--serif);
       font-size:22px;
       line-height:1.1;
     }
-    .mutinyMediaInner p{margin:0 0 12px; color:rgba(233,236,241,.80); line-height:1.5; font-size:13px}
+    .mutinyMediaInner p{margin:0 0 12px; color:rgba(233,236,241,.82); line-height:1.55; font-size:13px}
 
-    /* About/Future */
     .twoCol{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
     .threeCol{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
     .panel{
@@ -426,7 +449,6 @@
     .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
     .small{color:rgba(167,176,192,.86); font-size:12px}
 
-    /* Modal */
     .modal{
       position:fixed; inset:0; z-index:90;
       background:rgba(0,0,0,.55);
@@ -466,7 +488,6 @@
     }
     .modalFine{margin-top:10px; color:rgba(167,176,192,.86); font-size:12px}
 
-    /* Small screens */
     @media (max-width: 980px){
       section.hero{grid-template-columns: 1fr}
       .grid{grid-template-columns: 1fr}
@@ -521,9 +542,11 @@
           Intelligence, not outrage.
           <span class="accent">Signal</span>, not noise.
         </h1>
+
         <p class="lede">
-          JETTAI is a high-signal news hub that surfaces what’s about to matter — before the narrative hardens.
-          Built for pattern recognition, accountability, and memory. Free right now.
+          JETTAI is a <span class="hl strong">high-signal</span> news hub that surfaces what’s about to matter —
+          before the narrative hardens. Built for <span class="hl">pattern recognition</span>,
+          <span class="hl">accountability</span>, and <span class="hl">memory</span>. Free right now.
         </p>
 
         <div class="heroStats">
@@ -601,11 +624,11 @@
       <div class="mutinyWrap">
         <div class="mutinyCard">
           <div class="mutinyBrand">
-            <img class="mutinyLogo"
-              src="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4"
-              alt="The Mutiny Report"
-              style="display:none"
-            />
+            <div class="mutinyMark" aria-hidden="true">
+              <video autoplay muted loop playsinline preload="metadata">
+                <source src="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4" type="video/mp4">
+              </video>
+            </div>
             <div>
               <div class="mutinyTitle">The Mutiny Report</div>
               <div class="mutinySub">Independent commentary + pattern recognition.</div>
@@ -618,7 +641,7 @@
           </div>
 
           <div class="mutinyNote">
-            JETTAI surfaces the signal. Mutiny turns it into human language.
+            JETTAI surfaces the <span class="hl">signal</span>. Mutiny turns it into <span class="hl">human language</span>.
           </div>
         </div>
 
@@ -717,16 +740,11 @@
         <button class="btn solid" type="submit">Notify me</button>
       </form>
 
-      <div class="modalFine">
-        Stored locally for now.
-      </div>
+      <div class="modalFine">Stored locally for now.</div>
     </div>
   </div>
 
   <script>
-    const MUTINY_SITE = "https://mutinyreport.com";
-    const MUTINY_YOUTUBE = "https://www.youtube.com/@TheMutinyReport";
-
     const FEEDS = [
       { name: "ProPublica", tag: "investigations", url: "https://www.propublica.org/feeds/propublica/main" },
       { name: "DOJ News", tag: "gov", url: "https://www.justice.gov/news/rss?m=1" },
@@ -776,8 +794,8 @@
     function normalizeItem(item, sourceName, tag) {
       return {
         id: item.guid || item.link || (sourceName + ":" + item.title),
-        title: item.title || "Untitled",
-        link: item.link || "#",
+        title: item.title || "",
+        link: item.link || "",
         published: item.pubDate || item.published || item.date || "",
         summary: item.description || item.content || "",
         source: sourceName,
@@ -785,15 +803,20 @@
       };
     }
 
+    function isValidHttpUrl(u) {
+      return /^https?:\/\/.+/i.test(String(u || ""));
+    }
+
     function setTicker(items) {
       const top = items.slice(0, 6);
-      els.ticker.innerHTML = top.map((it, idx) =>
-        `<div class="tick" style="animation-delay:${idx * 70}ms">${escapeHtml(it.title)}</div>`
-      ).join("") || `<div class="tick">No items yet.</div>`;
+      els.ticker.innerHTML = top.length
+        ? top.map((it, idx) => `<div class="tick" style="animation-delay:${idx * 70}ms">${escapeHtml(it.title)}</div>`).join("")
+        : `<div class="tick">No signal available right now.</div>`;
     }
 
     function renderCards() {
       const q = state.query.trim().toLowerCase();
+
       const filtered = state.items.filter((it) => {
         const matchTag = state.filter === "all" ? true : it.tag === state.filter;
         if (!matchTag) return false;
@@ -806,9 +829,9 @@
           <div class="card">
             <div class="cardTop">
               <div class="source">JETTAI</div>
-              <div class="pillTag">No results</div>
+              <div class="pillTag">Quiet</div>
             </div>
-            <div class="title">Nothing matched your filter/search.</div>
+            <div class="title">No matching signal.</div>
             <div class="meta">Try “All” or clear the search box.</div>
           </div>`;
         els.statItems.textContent = "0";
@@ -824,7 +847,9 @@
               <div class="source">${escapeHtml(it.source)}</div>
               <div class="pillTag">${escapeHtml(it.tag)}</div>
             </div>
-            <div class="title"><a href="${it.link}" target="_blank" rel="noreferrer">${escapeHtml(it.title)}</a></div>
+            <div class="title">
+              <a href="${it.link}" target="_blank" rel="noreferrer">${escapeHtml(it.title)}</a>
+            </div>
             <div class="meta">${escapeHtml(sum || "—")}</div>
             <div class="cardBottom">
               <div class="time">${escapeHtml(t)}</div>
@@ -841,27 +866,25 @@
       const res = await fetch(url, { headers: { "Accept":"application/json" }});
       if (!res.ok) throw new Error("feed");
       const data = await res.json();
-      const items = (data.items || []).map((x) => normalizeItem(x, feed.name, feed.tag));
-      return items;
+      return (data.items || []).map((x) => normalizeItem(x, feed.name, feed.tag));
     }
 
     async function refreshAll() {
       els.cards.innerHTML = `<div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div>`;
+
       const results = [];
       for (const f of FEEDS) {
         try {
           const items = await fetchFeed(f);
-          results.push(...items);
+          for (const it of items) {
+            const title = String(it.title || "").trim();
+            const link = String(it.link || "").trim();
+            if (!title) continue;
+            if (!isValidHttpUrl(link)) continue;
+            results.push(it);
+          }
         } catch {
-          results.push({
-            id: "err:" + f.name,
-            title: `Could not load ${f.name} right now`,
-            link: f.url,
-            published: new Date().toISOString(),
-            summary: "",
-            source: f.name,
-            tag: f.tag
-          });
+          /* fail silently */
         }
       }
 
@@ -870,6 +893,22 @@
 
       els.statSources.textContent = String(FEEDS.length);
       els.updatedAt.textContent = nowStamp();
+
+      if (!results.length) {
+        els.ticker.innerHTML = `<div class="tick">No signal available right now.</div>`;
+        els.cards.innerHTML = `
+          <div class="card">
+            <div class="cardTop">
+              <div class="source">JETTAI</div>
+              <div class="pillTag">Offline</div>
+            </div>
+            <div class="title">Signal is temporarily unavailable.</div>
+            <div class="meta">Hit refresh in a minute.</div>
+          </div>`;
+        els.statItems.textContent = "0";
+        return;
+      }
+
       setTicker(results);
       renderCards();
     }
@@ -914,7 +953,7 @@
       const ctx = c.getContext("2d", { alpha: true });
       let w = 0, h = 0, dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
       const stars = [];
-      const N = 150;
+      const N = 155;
 
       function resize() {
         w = Math.floor(window.innerWidth);
@@ -947,8 +986,8 @@
         ctx.clearRect(0, 0, w, h);
 
         const g = ctx.createRadialGradient(mx, my, 60, w / 2, h / 2, Math.max(w, h));
-        g.addColorStop(0, "rgba(120,160,255,0.10)");
-        g.addColorStop(0.42, "rgba(255,120,200,0.06)");
+        g.addColorStop(0, "rgba(120,160,255,0.11)");
+        g.addColorStop(0.42, "rgba(255,120,200,0.07)");
         g.addColorStop(0.68, "rgba(120,255,214,0.05)");
         g.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = g;
