@@ -1342,7 +1342,9 @@
         docCategory: "",
         cache: new Map(),
         inflightKey: "",
-        backoffUntil: 0
+        backoffUntil: 0,
+        lastTotal: null,   // total from last response; used to gate "Next" pagination
+        lastResultCount: 0 // count of items on last response; used when API omits total
       };
 
       function epEsc(s){
@@ -1404,6 +1406,7 @@
           p.set("q", q || "*");
           p.set("type", "emails");
           p.set("limit", Math.min(100, per));
+          p.set("page", epState.page);
           return `${EP_API_BASE}/search?${p.toString()}`;
         }
 
@@ -1411,6 +1414,7 @@
         const p = new URLSearchParams();
         p.set("q", q || "*");
         p.set("limit", Math.min(100, per));
+        p.set("page", epState.page);
         return `${EP_API_BASE}/search?${p.toString()}`;
       }
 
@@ -1554,6 +1558,17 @@
         epAttachCopyButtons();
       }
 
+      function epResultCount(data){
+        if(!data || data.status !== "ok") return 0;
+        if(epState.mode === "all" || epState.mode === "emails"){
+          const docs = (data.data?.documents?.results) || [];
+          const emails = (data.data?.emails?.results) || [];
+          return epState.mode === "emails" ? emails.length : docs.length + emails.length;
+        }
+        const arr = Array.isArray(data.data) ? data.data : [];
+        return arr.length;
+      }
+
       async function epRun(){
         epState.q = ep.q.value.trim();
         ep.pageMeta.textContent = `Page: ${epState.page}`;
@@ -1568,6 +1583,8 @@
           if(epState.inflightKey !== key) return;
 
           const total = data?.meta?.total;
+          epState.lastTotal = total != null ? total : null;
+          epState.lastResultCount = epResultCount(data);
           epSetStatus(`<b>Done.</b> ${total != null ? `Found ~${total}.` : "Results loaded."}`, `Page ${epState.page}`);
           epRender(data);
         }catch(err){
@@ -1580,6 +1597,8 @@
         ep.q.value = "";
         epState.q = "";
         epState.page = 1;
+        epState.lastTotal = null;
+        epState.lastResultCount = 0;
         ep.personCategory.value = "";
         ep.docSource.value = "";
         ep.docCategory.value = "";
@@ -1674,6 +1693,12 @@
         }
       });
       ep.nextBtn.addEventListener("click", ()=>{
+        const total = epState.lastTotal;
+        const count = epState.lastResultCount;
+        const hasNext = total != null
+          ? (epState.page * epState.per_page < total)
+          : (count >= epState.per_page);
+        if(!hasNext) return;
         epState.page += 1;
         ep.pageMeta.textContent = `Page: ${epState.page}`;
         epRun();
