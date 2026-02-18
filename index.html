@@ -803,12 +803,12 @@
     <section id="epstein" class="section">
       <div class="sectionHead">
         <h2>Epstein Files Search</h2>
-        <p>One box. One click. Court docs in-page where possible, and official searches everywhere else.</p>
+        <p>In-page results from public sources (via a read-proxy). “Search Everything” opens official searches in new tabs.</p>
       </div>
 
       <div class="panel">
         <div class="epControls">
-          <input id="epQ" type="search" placeholder="Search terms (names, aliases, locations, docket IDs…)" autocomplete="off" />
+          <input id="epQ" type="search" placeholder="Search terms (names, aliases, locations…)" autocomplete="off" />
           <button class="btn solid" id="epRun">Search</button>
           <button class="btn ghost" id="epOpenAll">Search Everything</button>
           <button class="btn ghost" id="epClear">Clear</button>
@@ -823,7 +823,7 @@
 
         <div class="legal">
           <div class="small">
-            Some government sites don’t allow browsers to pull/merge results directly (CORS). This tool still searches them by launching official searches in new tabs, while showing in-page results for sources that expose public APIs.
+            Note: some government sites block browsers from fetching and merging results directly (CORS). This page uses a read-proxy to fetch and extract links for in-page viewing. If a source changes its markup, it may degrade until we adjust the extractor.
           </div>
         </div>
       </div>
@@ -919,6 +919,22 @@
     const escapeHtml = (str) => String(str || "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
       .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    function highlight(text, q) {
+      const s = String(text || "");
+      const qq = String(q || "").trim();
+      if (!qq) return escapeHtml(s);
+      const re = new RegExp(qq.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
+      const parts = s.split(re);
+      const matches = s.match(re);
+      if (!matches) return escapeHtml(s);
+      let out = "";
+      for (let i = 0; i < parts.length; i++) {
+        out += escapeHtml(parts[i]);
+        if (matches[i]) out += `<mark>${escapeHtml(matches[i])}</mark>`;
+      }
+      return out;
+    }
 
     const cleanSummary = (s) => {
       if (!s) return "";
@@ -1135,203 +1151,198 @@
     }
 
     // ===============================
-    // EPSTEIN: Unified Search UI (no-backend)
-    // - In-page results: CourtListener (API)
-    // - “Search Everything”: opens official searches in new tabs
+    // EPSTEIN: In-page search that ACTUALLY WORKS (no backend)
+    // Uses Jina Reader proxy to bypass CORS and parse results from official sites.
+    // Sources: DOJ search, FBI Vault, FBI.gov search, GovInfo search.
     // ===============================
+
+    const JINA_READ = "https://r.jina.ai/https://";
 
     const EP_SOURCES = [
       {
-        key: "courtlistener",
-        name: "CourtListener (In-page results)",
-        tag: "court",
-        open: (q) => `https://www.courtlistener.com/?q=${encodeURIComponent(q)}`
-      },
-      {
         key: "doj",
-        name: "DOJ (site search)",
+        name: "DOJ Search",
         tag: "doj",
-        open: (q) => `https://www.justice.gov/search?search_api_fulltext=${encodeURIComponent(q)}`
+        queryUrl: (q) => `https://www.justice.gov/search?search_api_fulltext=${encodeURIComponent(q)}`,
+        parseHost: "www.justice.gov"
       },
       {
         key: "fbi_vault",
-        name: "FBI Vault (site search)",
+        name: "FBI Vault",
         tag: "vault",
-        open: (q) => `https://vault.fbi.gov/search?SearchableText=${encodeURIComponent(q)}`
+        queryUrl: (q) => `https://vault.fbi.gov/search?SearchableText=${encodeURIComponent(q)}`,
+        parseHost: "vault.fbi.gov"
       },
       {
         key: "fbi_site",
-        name: "FBI.gov (site search)",
+        name: "FBI.gov Search",
         tag: "fbi",
-        open: (q) => `https://www.fbi.gov/search?query=${encodeURIComponent(q)}`
+        queryUrl: (q) => `https://www.fbi.gov/search?query=${encodeURIComponent(q)}`,
+        parseHost: "www.fbi.gov"
       },
       {
         key: "govinfo",
-        name: "GovInfo (documents)",
+        name: "GovInfo",
         tag: "govinfo",
-        open: (q) => `https://www.govinfo.gov/app/search/%7B%22query%22%3A%22${encodeURIComponent(q)}%22%7D`
-      },
-      {
-        key: "archives",
-        name: "Internet Archive",
-        tag: "archive",
-        open: (q) => `https://archive.org/search?query=${encodeURIComponent(q)}`
-      },
-      {
-        key: "wikipedia",
-        name: "Wikipedia (context)",
-        tag: "context",
-        open: (q) => `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(q)}`
+        queryUrl: (q) => `https://www.govinfo.gov/app/search/%7B%22query%22%3A%22${encodeURIComponent(q)}%22%7D`,
+        parseHost: "www.govinfo.gov"
       }
     ];
 
-    const COURTLISTENER_API =
-      "https://www.courtlistener.com/api/rest/v3/search/?type=o&q=";
+    function openAllEpsteinSources(q) {
+      const clean = (q || "").trim();
+      if (!clean) return;
+      for (const s of EP_SOURCES) window.open(s.queryUrl(clean), "_blank", "noopener,noreferrer");
+    }
 
-    const EP_MAX_RESULTS = 30;
-
-    function safeFetchJson(url, timeoutMs = 9000) {
+    async function jinaRead(url, timeoutMs = 12000) {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), timeoutMs);
-      return fetch(url, {
-        signal: ctrl.signal,
-        headers: { "Accept":"application/json" }
-      })
-        .then(r => (clearTimeout(t), r.ok ? r.json() : null))
-        .catch(() => null);
-    }
-
-    function highlight(text, q) {
-      if (!q) return escapeHtml(text || "");
-      const safe = String(text || "");
-      const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
-      const parts = safe.split(re);
-      const matches = safe.match(re);
-      if (!matches) return escapeHtml(safe);
-      let out = "";
-      for (let i = 0; i < parts.length; i++) {
-        out += escapeHtml(parts[i]);
-        if (matches[i]) out += `<mark>${escapeHtml(matches[i])}</mark>`;
+      try {
+        const res = await fetch(JINA_READ + url, { signal: ctrl.signal, headers: { "Accept": "text/plain" } });
+        clearTimeout(t);
+        if (!res.ok) return "";
+        return await res.text();
+      } catch {
+        clearTimeout(t);
+        return "";
       }
-      return out;
     }
 
-    function renderEpsteinLauncher(q) {
-      const clean = (q || "").trim();
-      const rows = EP_SOURCES.map((s) => {
-        const href = s.open(clean || "Jeffrey Epstein");
-        return `
-          <article class="epResult">
-            <div class="cardTop">
-              <div class="source">${escapeHtml(s.name)}</div>
-              <div class="pillTag">${escapeHtml(s.tag)}</div>
-            </div>
-            <div class="epTitle">
-              <a href="${escapeHtml(href)}" target="_blank" rel="noreferrer">Open search</a>
-            </div>
-            <div class="epSmall">
-              Runs a public search on the official site using your query.
-            </div>
-            <div class="cardBottom" style="margin-top:12px;">
-              <div class="time">External</div>
-              <a class="read" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">Open</a>
-            </div>
-          </article>
-        `;
-      }).join("");
+    function extractLinksFromText(text, hostFilter) {
+      const out = [];
+      const seen = new Set();
 
-      return `
-        <article class="epResult" style="grid-column: 1 / -1;">
-          <div class="cardTop">
-            <div class="source">Search Everything</div>
-            <div class="pillTag">Launchers</div>
-          </div>
-          <div class="epSmall">
-            Some government sites don’t allow browsers to pull and merge results into a single page (CORS).
-            These launch official searches in new tabs. In-page results appear below where public APIs exist.
-          </div>
-        </article>
-        ${rows}
-      `;
+      const mdRe = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+      let m;
+      while ((m = mdRe.exec(text)) !== null) {
+        const title = (m[1] || "").trim();
+        const url = (m[2] || "").trim();
+        if (!url || !url.startsWith("http")) continue;
+        if (hostFilter && !url.includes(hostFilter)) continue;
+        if (seen.has(url)) continue;
+        seen.add(url);
+        out.push({ title: title || url, url });
+        if (out.length >= 30) break;
+      }
+
+      if (out.length < 8) {
+        const urlRe = /(https?:\/\/[^\s<>()]+)\b/g;
+        let u;
+        while ((u = urlRe.exec(text)) !== null) {
+          const url = (u[1] || "").trim();
+          if (!url || !url.startsWith("http")) continue;
+          if (hostFilter && !url.includes(hostFilter)) continue;
+          if (seen.has(url)) continue;
+          seen.add(url);
+          out.push({ title: url, url });
+          if (out.length >= 30) break;
+        }
+      }
+
+      return out;
     }
 
     function renderEpsteinResults(results, q, note) {
       els.epStatus.textContent = note || "Ready.";
       els.epCount.textContent = String(results.length);
 
-      const launcher = renderEpsteinLauncher(q);
-      const body = results.length
-        ? results.map((r) => {
-            return `
-              <article class="epResult">
-                <div class="cardTop">
-                  <div class="source">${escapeHtml(r.source || "CourtListener")}</div>
-                  <div class="pillTag">${escapeHtml(r.tag || "court")}</div>
-                </div>
-                <div class="epTitle">
-                  <a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${highlight(r.title, q)}</a>
-                </div>
-                <div class="epSmall">${highlight(r.snippet, q)}</div>
-                <div class="cardBottom" style="margin-top:12px;">
-                  <div class="time">${escapeHtml(r.date || "—")}</div>
-                  <a class="read" href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">Open</a>
-                </div>
-              </article>
-            `;
-          }).join("")
-        : `
+      if (!results.length) {
+        els.epResults.innerHTML = `
           <article class="epResult" style="grid-column: 1 / -1;">
             <div class="cardTop">
-              <div class="source">CourtListener</div>
+              <div class="source">JETTAI</div>
               <div class="pillTag">No hits</div>
             </div>
-            <div class="epTitle">No in-page results.</div>
-            <div class="epSmall">Use the launchers above to search DOJ / FBI Vault / GovInfo / Archive.</div>
+            <div class="epTitle">No results loaded in-page.</div>
+            <div class="epSmall">Try broader terms (last names, “Epstein”, “Maxwell”, “flight logs”, “non-prosecution agreement”).</div>
           </article>
         `;
-
-      els.epResults.innerHTML = launcher + body;
-    }
-
-    function openAllEpsteinSources(q) {
-      const clean = (q || "").trim();
-      if (!clean) return;
-      for (const s of EP_SOURCES) {
-        window.open(s.open(clean), "_blank", "noopener,noreferrer");
+        return;
       }
+
+      els.epResults.innerHTML = results.map((r) => `
+        <article class="epResult">
+          <div class="cardTop">
+            <div class="source">${escapeHtml(r.source)}</div>
+            <div class="pillTag">${escapeHtml(r.tag)}</div>
+          </div>
+          <div class="epTitle">
+            <a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${highlight(r.title, q)}</a>
+          </div>
+          <div class="epSmall">${highlight(r.snippet || "", q)}</div>
+          <div class="cardBottom" style="margin-top:12px;">
+            <div class="time">Public</div>
+            <a class="read" href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">Open</a>
+          </div>
+        </article>
+      `).join("");
     }
 
     async function runEpsteinSearch() {
       const q = (els.epQ.value || "").trim();
       if (!q) {
         renderEpsteinResults([], "", "Type a query to search.");
+        els.epCount.textContent = "0";
         return;
       }
 
-      els.epResults.innerHTML = renderEpsteinLauncher(q) + `<div class="skeleton epResult"></div><div class="skeleton epResult"></div><div class="skeleton epResult"></div>`;
-      els.epStatus.textContent = "Searching CourtListener (in-page)…";
+      els.epStatus.textContent = "Searching public sources…";
+      els.epResults.innerHTML = `
+        <div class="skeleton epResult"></div>
+        <div class="skeleton epResult"></div>
+        <div class="skeleton epResult"></div>
+      `;
+      els.epCount.textContent = "—";
 
-      const data = await safeFetchJson(COURTLISTENER_API + encodeURIComponent(q), 9000);
-      const rows = (data && data.results) ? data.results.slice(0, EP_MAX_RESULTS) : [];
+      const all = [];
+      for (const src of EP_SOURCES) {
+        const pageUrl = src.queryUrl(q);
+        const txt = await jinaRead(pageUrl);
+        if (!txt) continue;
 
-      const mapped = rows.map(r => {
-        const url = r.absolute_url ? ("https://www.courtlistener.com" + r.absolute_url) : (r.url || "");
-        const title = r.caseName || r.title || r.description || "Result";
-        const snippet = (r.snippet || r.text || "")
-          .replace(/<[^>]*>/g, " ")
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 220);
-        const date = r.dateFiled || r.dateCreated || r.dateModified || "";
-        return { title, url, snippet, date, source: "CourtListener", tag: "court" };
-      }).filter(x => isValidHttpUrl(x.url));
+        const links = extractLinksFromText(txt, src.parseHost);
+        for (const l of links) {
+          if (!isValidHttpUrl(l.url)) continue;
+          all.push({
+            source: src.name,
+            tag: src.tag,
+            title: l.title || l.url,
+            url: l.url,
+            snippet: ""
+          });
+        }
+      }
 
-      if (!mapped.length) {
-        renderEpsteinResults([], q, "No in-page results. Launchers are ready above.");
+      const seen = new Set();
+      const deduped = [];
+      for (const r of all) {
+        const key = r.url;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        deduped.push(r);
+        if (deduped.length >= 36) break;
+      }
+
+      if (!deduped.length) {
+        renderEpsteinResults([], q, "No results found across DOJ/FBI/GovInfo for that query.");
         return;
       }
 
-      renderEpsteinResults(mapped, q, "CourtListener results loaded. Launchers above search the rest.");
+      renderEpsteinResults(deduped, q, `Loaded ${deduped.length} results from DOJ/FBI/GovInfo.`);
+    }
+
+    function bindEpsteinUI(){
+      els.epRun?.addEventListener("click", runEpsteinSearch);
+      els.epOpenAll?.addEventListener("click", () => openAllEpsteinSources(els.epQ.value || ""));
+      els.epClear?.addEventListener("click", () => {
+        els.epQ.value = "";
+        renderEpsteinResults([], "", "Ready.");
+        els.epCount.textContent = "0";
+      });
+      els.epQ?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); runEpsteinSearch(); }
+      });
     }
 
     function bindUI() {
@@ -1363,16 +1374,6 @@
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") refreshAll({ silent: true });
-      });
-
-      els.epRun?.addEventListener("click", runEpsteinSearch);
-      els.epOpenAll?.addEventListener("click", () => openAllEpsteinSources(els.epQ.value || ""));
-      els.epClear?.addEventListener("click", () => {
-        els.epQ.value = "";
-        renderEpsteinResults([], "", "Ready.");
-      });
-      els.epQ?.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") { e.preventDefault(); runEpsteinSearch(); }
       });
     }
 
@@ -1473,6 +1474,7 @@
       if (params.get("sent") === "1") toast("Update request received.");
 
       bindUI();
+      bindEpsteinUI();
       startField();
 
       renderEpsteinResults([], "", "Ready.");
