@@ -300,7 +300,6 @@
     }
     .search input::placeholder{color:rgba(167,176,192,.75)}
 
-    /* Signals cards grid */
     .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -449,122 +448,65 @@
     .panel h3{margin:0 0 8px; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,241,.86)}
     .panel p{margin:0 0 12px; color:var(--muted); line-height:1.55}
 
-    /* ===== Epstein tool (integrated) ===== */
-    .epWrap{display:grid; grid-template-columns: 1.15fr .85fr; gap:12px; align-items:start}
-    @media (max-width: 980px){ .epWrap{grid-template-columns:1fr} }
-    .epCard{
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      padding:16px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.18);
-      position:relative;
-      overflow:hidden;
+    /* Epstein Search UI */
+    .epControls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:12px;
     }
-    .epCard::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: linear-gradient(135deg, rgba(255,120,200,.12), rgba(120,160,255,.14), rgba(120,255,214,.10));
-      opacity:.22;
-      pointer-events:none;
-    }
-    .epHead{position:relative; display:flex; gap:10px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap}
-    .epTitle{font-family:var(--serif); font-size:26px; margin:0}
-    .epSub{color:var(--muted); margin:6px 0 0; line-height:1.5; font-size:13px; max-width:80ch}
-    .epBar{position:relative; display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px}
-    .epInput{
-      flex:1; min-width:240px;
-      border:1px solid var(--line);
+    .epControls input, .epControls select{
+      border:1px solid rgba(255,255,255,.14);
       border-radius:14px;
       background:rgba(0,0,0,.28);
       color:var(--fg);
       padding:11px 12px;
       outline:none;
-      font-size:14px;
     }
-    .epInput::placeholder{color:rgba(167,176,192,.75)}
-    .epTabs{position:relative; display:flex; gap:8px; flex-wrap:wrap}
-    .epTab{
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.18);
-      color:var(--muted);
-      padding:8px 10px;
-      border-radius:999px;
-      font-size:12px;
-      cursor:pointer;
-      transition: all .18s ease;
-      user-select:none;
-    }
-    .epTab:hover{color:var(--fg); background:rgba(255,255,255,.06)}
-    .epTab.active{
-      color:var(--fg);
-      border-color:rgba(255,255,255,.20);
-      background:rgba(255,255,255,.09);
-    }
-    .epPresets{position:relative; display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-    .epPreset{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);
-      color:rgba(233,236,241,.86);
-      padding:7px 9px;
-      border-radius:12px;
-      font-size:12px;
-      cursor:pointer;
-      transition: all .18s ease;
-      user-select:none;
-    }
-    .epPreset:hover{border-color:rgba(255,255,255,.20); background:rgba(255,255,255,.06)}
-    .epStatus{
-      position:relative;
-      margin-top:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.22);
-      border-radius:14px;
-      padding:10px 12px;
-      color:rgba(233,236,241,.86);
-      font-size:12px;
+    .epControls input{flex:1; min-width:220px}
+    .epControls select{min-width:210px}
+    .epMetaRow{
       display:flex;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
+      gap:12px;
       flex-wrap:wrap;
-    }
-    .epStatus b{color:var(--fg); font-weight:600}
-    .epList{position:relative; margin-top:12px; display:grid; gap:10px}
-    .epItem{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);
-      border-radius:16px;
-      padding:12px;
-    }
-    .epKicker{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:rgba(120,255,214,.82)}
-    .epH3{margin:8px 0 6px; font-size:14px; line-height:1.35}
-    .epP{margin:0; color:rgba(167,176,192,.95); font-size:12.5px; line-height:1.5}
-    .epLinks{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .epLink{
+      color:rgba(167,176,192,.90);
       font-size:12px;
-      color:rgba(233,236,241,.92);
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,.10);
-      padding:8px 10px;
-      border-radius:14px;
-      background:rgba(0,0,0,.22);
-      cursor:pointer;
-      user-select:none;
+      margin-bottom:10px;
     }
-    .epLink:hover{background:rgba(255,255,255,.06)}
-    .epLink.primary{border-color:rgba(120,255,214,.22); background:rgba(120,255,214,.06)}
-    .epLink.warn{border-color:rgba(255,120,200,.22); background:rgba(255,120,200,.06)}
-    .epMini{color:rgba(167,176,192,.86); font-size:11px}
-    .epControls{position:relative; display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px}
-    .epSelect{
+    .epResults{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .epResult{
       border:1px solid var(--line);
-      border-radius:14px;
-      background:rgba(0,0,0,.28);
-      color:var(--fg);
-      padding:10px 12px;
-      outline:none;
-      font-size:13px;
-      min-width:220px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      min-height:150px;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .epResult:hover{
+      transform: translateY(-2px);
+      border-color:rgba(255,255,255,.20);
+      background:rgba(255,255,255,.05);
+    }
+    .epTitle{margin:6px 0 8px; font-size:15px; line-height:1.35; font-weight:600}
+    .epTitle a{color:var(--fg); text-decoration:none}
+    .epTitle a:hover{text-decoration:underline}
+    .epSmall{font-size:12px; color:rgba(167,176,192,.90); line-height:1.45}
+    mark{
+      background: linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.22), rgba(120,255,214,.16));
+      color: var(--fg);
+      padding:0 .15em;
+      border-radius:.35em;
+      border:1px solid rgba(255,255,255,.12);
     }
 
     .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
@@ -632,6 +574,7 @@
       .twoCol{grid-template-columns: 1fr}
       .threeCol{grid-template-columns: 1fr}
       .mutinyWrap{grid-template-columns: 1fr}
+      .epResults{grid-template-columns: 1fr}
       nav.nav{display:none}
       .hero h1{font-size:44px}
     }
@@ -662,10 +605,10 @@
 
     <nav class="nav">
       <a href="#signals">Signals</a>
-      <a href="#epstein">Epstein Files</a>
       <a href="#mutiny">Mutiny</a>
       <a href="#about">About</a>
       <a href="#future">Subscriptions</a>
+      <a href="#epstein">Epstein</a>
     </nav>
 
     <div class="cta">
@@ -708,7 +651,6 @@
           <a class="btn solid" href="#signals">View Signals</a>
           <button class="btn ghost" id="btnRefresh">Refresh</button>
           <a class="btn ghost" href="#epstein">Epstein Files</a>
-          <a class="btn ghost" href="#mutiny">Mutiny Report</a>
         </div>
 
         <div class="fineprint">
@@ -745,7 +687,6 @@
           <button class="pill" data-filter="investigations">Investigations</button>
         </div>
         <div class="search">
-          <!-- NOTE: This is signals search. Epstein tool uses ep_q below. -->
           <input id="q" type="search" placeholder="Search signals…" autocomplete="off" />
         </div>
       </div>
@@ -754,131 +695,6 @@
         <div class="skeleton card"></div>
         <div class="skeleton card"></div>
         <div class="skeleton card"></div>
-      </div>
-    </section>
-
-    <!-- ===== Epstein Files Tool (added) ===== -->
-    <section id="epstein" class="section">
-      <div class="sectionHead">
-        <h2>Epstein Files</h2>
-        <p>
-          Search a public mirror/index and open the source record. When a DOJ / primary link exists in the record,
-          it’ll show as “Open DOJ / Primary.”
-        </p>
-      </div>
-
-      <div class="epWrap">
-        <div class="epCard">
-          <div class="epHead">
-            <div>
-              <h3 class="epTitle">Search the public record</h3>
-              <p class="epSub">
-                Use names, phrases, places, and keywords. This is a navigation tool: inclusion ≠ guilt.
-              </p>
-            </div>
-            <div class="pillTag" style="position:relative">Mirror Index</div>
-          </div>
-
-          <div class="epBar">
-            <input id="ep_q" class="epInput" type="search" placeholder='Try: "non prosecution agreement", "Little St. James", "flight log", "redacted"' autocomplete="off" />
-            <button class="btn solid" id="ep_searchBtn">Search</button>
-            <button class="btn ghost" id="ep_clearBtn">Clear</button>
-          </div>
-
-          <div class="epTabs" id="ep_tabs" aria-label="Epstein search mode">
-            <div class="epTab active" data-mode="all">All</div>
-            <div class="epTab" data-mode="documents">Documents</div>
-            <div class="epTab" data-mode="emails">Emails</div>
-            <div class="epTab" data-mode="people">People</div>
-            <div class="epTab" data-mode="flights">Flights</div>
-          </div>
-
-          <div class="epPresets" id="ep_presets" aria-label="Quick searches">
-            <button class="epPreset" data-preset="redactions">Redactions</button>
-            <button class="epPreset" data-preset="npa">NPA / Immunity</button>
-            <button class="epPreset" data-preset="plea">Plea / Deal</button>
-            <button class="epPreset" data-preset="flight">Flight logs</button>
-            <button class="epPreset" data-preset="emails">Emails</button>
-            <button class="epPreset" data-preset="money">Money / Trusts</button>
-            <button class="epPreset" data-preset="cover">Cover-up language</button>
-          </div>
-
-          <div class="epStatus" id="ep_status">
-            <span><b>Ready.</b> Type a query or hit a preset.</span>
-            <span class="epMini">Tip: quotes = exact phrase.</span>
-          </div>
-
-          <div class="epList" id="ep_results"></div>
-
-          <div class="epMini" style="position:relative; margin-top:12px; line-height:1.6">
-            <b>Note:</b> This tool queries a third-party public index (mirror). If their API is down or rate-limited, results will fail gracefully.
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3>Filters</h3>
-          <p>Optional filters that make “people” and “documents” modes more surgical.</p>
-
-          <div style="display:grid; gap:10px; margin-top:10px">
-            <div>
-              <div class="small" style="margin-bottom:6px">People category (only affects “People”)</div>
-              <select class="epSelect" id="ep_personCategory">
-                <option value="">(any)</option>
-                <option value="politician">politician</option>
-                <option value="business">business</option>
-                <option value="royalty">royalty</option>
-                <option value="celebrity">celebrity</option>
-                <option value="associate">associate</option>
-                <option value="legal">legal</option>
-                <option value="academic">academic</option>
-                <option value="socialite">socialite</option>
-                <option value="military-intelligence">military-intelligence</option>
-                <option value="other">other</option>
-              </select>
-            </div>
-
-            <div>
-              <div class="small" style="margin-bottom:6px">Documents source (only affects “Documents”)</div>
-              <select class="epSelect" id="ep_docSource">
-                <option value="">(any)</option>
-                <option value="doj-release">doj-release</option>
-                <option value="efta">efta</option>
-                <option value="court-filing">court-filing</option>
-                <option value="fbi">fbi</option>
-              </select>
-            </div>
-
-            <div>
-              <div class="small" style="margin-bottom:6px">Documents category (only affects “Documents”)</div>
-              <select class="epSelect" id="ep_docCategory">
-                <option value="">(any)</option>
-                <option value="deposition">deposition</option>
-                <option value="testimony">testimony</option>
-                <option value="correspondence">correspondence</option>
-              </select>
-            </div>
-
-            <div>
-              <div class="small" style="margin-bottom:6px">Results per page</div>
-              <select class="epSelect" id="ep_perPage">
-                <option value="10">10</option>
-                <option value="20" selected>20</option>
-                <option value="40">40</option>
-                <option value="100">100</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="epControls">
-            <button class="btn ghost" id="ep_prevBtn">Prev</button>
-            <button class="btn ghost" id="ep_nextBtn">Next</button>
-            <span class="small" id="ep_pageMeta">Page: 1</span>
-          </div>
-
-          <div class="small" style="margin-top:12px; line-height:1.6">
-            <b>Safety:</b> This tool avoids claims. It just routes people to primary materials when present.
-          </div>
-        </div>
       </div>
     </section>
 
@@ -982,6 +798,44 @@
           <button class="btn ghost" disabled>Coming Soon</button>
         </div>
       </div>
+    </section>
+
+    <!-- Epstein Search (public records federated search + in-page results where possible) -->
+    <section id="epstein" class="section">
+      <div class="sectionHead">
+        <h2>Epstein Files Search</h2>
+        <p>Search public records + archives. Opens sources cleanly. No “could not load” garbage.</p>
+      </div>
+
+      <div class="panel">
+        <div class="epControls">
+          <input id="epQ" type="search" placeholder="Search terms (names, aliases, locations, docket IDs…)" autocomplete="off" />
+          <select id="epScope" aria-label="Scope filter">
+            <option value="all">All sources</option>
+            <option value="courtlistener">CourtListener (in-page results)</option>
+            <option value="doj">DOJ site search</option>
+            <option value="vault">FBI Vault search</option>
+            <option value="govinfo">GovInfo search</option>
+            <option value="archives">Archives / reporting</option>
+          </select>
+          <button class="btn solid" id="epRun">Search</button>
+          <button class="btn ghost" id="epOpenAll">Open Sources</button>
+          <button class="btn ghost" id="epClear">Clear</button>
+        </div>
+
+        <div class="epMetaRow">
+          <div><span id="epStatus">Ready.</span></div>
+          <div><span id="epCount">0</span> results</div>
+        </div>
+
+        <div class="epResults" id="epResults"></div>
+
+        <div class="legal">
+          <div class="small">
+            “Open Sources” launches official search pages in new tabs using your query. In-page results come from CourtListener (public court docs).
+          </div>
+        </div>
+      </div>
 
       <div class="legal">
         <div class="small">
@@ -991,9 +845,7 @@
     </section>
   </main>
 
-  <div class="toast" id="toast" hidden>
-    <span>Update request received.</span>
-  </div>
+  <div class="toast" id="toast" hidden><span></span></div>
 
   <div class="modal" id="modal" hidden>
     <div class="modalCard">
@@ -1002,9 +854,7 @@
         <button class="x" id="modalClose" aria-label="Close">✕</button>
       </div>
 
-      <p class="modalText">
-        Drop your email. You’ll get occasional signal drops. No spam.
-      </p>
+      <p class="modalText">Drop your email. You’ll get occasional signal drops. No spam.</p>
 
       <form id="notifyForm" class="form" action="https://formsubmit.co/fletcher@jamkillerproductions.io" method="POST">
         <input id="email" name="email" type="email" placeholder="you@domain.com" required />
@@ -1020,14 +870,27 @@
   </div>
 
   <script>
-    /* ===================== Signals (your existing tool) ===================== */
     const FEEDS = [
       { name: "ProPublica", tag: "investigations", url: "https://www.propublica.org/feeds/propublica/main" },
+      { name: "ICIJ", tag: "investigations", url: "https://www.icij.org/feed/" },
       { name: "DOJ News", tag: "gov", url: "https://www.justice.gov/news/rss?m=1" },
+      { name: "FBI News", tag: "gov", url: "https://www.fbi.gov/feeds/news" },
+      { name: "US Courts News", tag: "law", url: "https://news.uscourts.gov/feed" },
       { name: "SEC Press Releases", tag: "finance", url: "https://www.sec.gov/news/pressreleases.rss" },
-      { name: "US Courts News", tag: "law", url: "https://news.uscourts.gov/feed" }
+      { name: "CFTC Press Releases", tag: "finance", url: "https://www.cftc.gov/PressRoom/PressReleases/index.xml" },
+      { name: "Reuters Top News", tag: "all", url: "https://feeds.reuters.com/reuters/topNews" },
+      { name: "AP Top News", tag: "all", url: "https://apnews.com/apf-topnews?output=rss" },
+      { name: "BBC World", tag: "all", url: "http://feeds.bbci.co.uk/news/world/rss.xml" },
+      { name: "NPR News", tag: "all", url: "https://feeds.npr.org/1001/rss.xml" }
     ];
+
     const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+    const AUTO_REFRESH_MS = 5 * 60 * 1000;
+    const MAX_ITEMS_IN_MEMORY = 400;
+    const INITIAL_RENDER = 36;
+    const LOAD_MORE_STEP = 24;
+    const PER_FEED_LIMIT = 18;
 
     const els = {
       cards: document.getElementById("cards"),
@@ -1042,11 +905,26 @@
       btnNotify: document.getElementById("btnNotify"),
       modal: document.getElementById("modal"),
       modalClose: document.getElementById("modalClose"),
-      notifyForm: document.getElementById("notifyForm"),
-      toast: document.getElementById("toast")
+      toast: document.getElementById("toast"),
+
+      epQ: document.getElementById("epQ"),
+      epScope: document.getElementById("epScope"),
+      epRun: document.getElementById("epRun"),
+      epOpenAll: document.getElementById("epOpenAll"),
+      epClear: document.getElementById("epClear"),
+      epStatus: document.getElementById("epStatus"),
+      epCount: document.getElementById("epCount"),
+      epResults: document.getElementById("epResults"),
     };
 
-    const state = { items: [], filter: "all", query: "" };
+    const state = {
+      items: [],
+      seen: new Set(),
+      filter: "all",
+      query: "",
+      visibleCount: INITIAL_RENDER,
+      autoTimer: null,
+    };
 
     const escapeHtml = (str) => String(str || "")
       .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
@@ -1066,20 +944,30 @@
 
     const nowStamp = () => new Date().toLocaleString([], { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
 
-    function normalizeItem(item, sourceName, tag) {
-      return {
-        id: item.guid || item.link || (sourceName + ":" + item.title),
-        title: item.title || "",
-        link: item.link || "",
-        published: item.pubDate || item.published || item.date || "",
-        summary: item.description || item.content || "",
-        source: sourceName,
-        tag
-      };
+    function toast(msg) {
+      if (!els.toast) return;
+      els.toast.querySelector("span").textContent = msg;
+      els.toast.hidden = false;
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
     }
 
     function isValidHttpUrl(u) {
       return /^https?:\/\/.+/i.test(String(u || ""));
+    }
+
+    function normalizeItem(item, sourceName, tag) {
+      const link = item.link || item.guid || "";
+      const id = item.guid || item.link || (sourceName + ":" + (item.title || "") + ":" + (item.pubDate || item.published || ""));
+      return {
+        id,
+        title: item.title || "",
+        link,
+        published: item.pubDate || item.published || item.date || "",
+        summary: item.description || item.content || "",
+        source: sourceName,
+        tag: tag === "all" ? "all" : tag
+      };
     }
 
     function setTicker(items) {
@@ -1089,16 +977,51 @@
         : `<div class="tick">No signal available right now.</div>`;
     }
 
-    function renderCards() {
+    function ensureLoadMoreControl() {
+      if (document.getElementById("loadMoreWrap")) return;
+
+      const wrap = document.createElement("div");
+      wrap.id = "loadMoreWrap";
+      wrap.style.display = "flex";
+      wrap.style.justifyContent = "center";
+      wrap.style.marginTop = "14px";
+
+      const btn = document.createElement("button");
+      btn.id = "btnLoadMore";
+      btn.className = "btn ghost";
+      btn.textContent = "Load more";
+      btn.addEventListener("click", () => {
+        state.visibleCount += LOAD_MORE_STEP;
+        renderCards();
+      });
+
+      wrap.appendChild(btn);
+      document.getElementById("signals").appendChild(wrap);
+    }
+
+    function getFiltered() {
       const q = state.query.trim().toLowerCase();
-      const filtered = state.items.filter((it) => {
+      return state.items.filter((it) => {
         const matchTag = state.filter === "all" ? true : it.tag === state.filter;
         if (!matchTag) return false;
         if (!q) return true;
         return (it.title + " " + it.summary + " " + it.source).toLowerCase().includes(q);
       });
+    }
 
-      if (!filtered.length) {
+    function renderCards() {
+      ensureLoadMoreControl();
+
+      const filtered = getFiltered();
+      const slice = filtered.slice(0, state.visibleCount);
+
+      const loadMoreBtn = document.getElementById("btnLoadMore");
+      if (loadMoreBtn) {
+        loadMoreBtn.disabled = slice.length >= filtered.length;
+        loadMoreBtn.textContent = slice.length >= filtered.length ? "No more right now" : "Load more";
+      }
+
+      if (!slice.length) {
         els.cards.innerHTML = `
           <div class="card">
             <div class="cardTop">
@@ -1112,7 +1035,7 @@
         return;
       }
 
-      els.cards.innerHTML = filtered.slice(0, 36).map((it) => {
+      els.cards.innerHTML = slice.map((it) => {
         const t = fmtTime(it.published);
         const sum = cleanSummary(it.summary);
         return `
@@ -1140,36 +1063,59 @@
       const res = await fetch(url, { headers: { "Accept":"application/json" }});
       if (!res.ok) throw new Error("feed");
       const data = await res.json();
-      return (data.items || []).map((x) => normalizeItem(x, feed.name, feed.tag));
+      const items = (data.items || []).slice(0, PER_FEED_LIMIT);
+      return items.map((x) => normalizeItem(x, feed.name, feed.tag));
     }
 
-    async function refreshAll() {
-      els.cards.innerHTML = `<div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div>`;
+    function mergeNewItems(newItems) {
+      let added = 0;
+      for (const it of newItems) {
+        const title = String(it.title || "").trim();
+        const link = String(it.link || "").trim();
+        if (!title) continue;
+        if (!isValidHttpUrl(link)) continue;
+        if (state.seen.has(it.id) || state.seen.has(link)) continue;
 
-      const results = [];
+        state.seen.add(it.id);
+        state.seen.add(link);
+        state.items.push(it);
+        added++;
+      }
+
+      if (state.items.length > MAX_ITEMS_IN_MEMORY) {
+        state.items.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
+        state.items = state.items.slice(0, MAX_ITEMS_IN_MEMORY);
+
+        const s = new Set();
+        for (const it of state.items) { s.add(it.id); s.add(it.link); }
+        state.seen = s;
+      }
+      return added;
+    }
+
+    async function refreshAll({ silent = false } = {}) {
+      if (!silent) {
+        els.cards.innerHTML = `<div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div>`;
+      }
+
+      const gathered = [];
       for (const f of FEEDS) {
         try {
           const items = await fetchFeed(f);
-          for (const it of items) {
-            const title = String(it.title || "").trim();
-            const link = String(it.link || "").trim();
-            if (!title) continue;
-            if (!isValidHttpUrl(link)) continue;
-            results.push(it);
-          }
-        } catch {
-          /* fail silently */
-        }
+          gathered.push(...items);
+        } catch { }
       }
 
-      results.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
-      state.items = results;
+      gathered.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
+      const added = mergeNewItems(gathered);
+
+      state.items.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
 
       els.statSources.textContent = String(FEEDS.length);
       els.updatedAt.textContent = nowStamp();
 
-      if (!results.length) {
-        els.ticker.innerHTML = `<div class="tick">No signal available right now.</div>`;
+      if (!state.items.length) {
+        setTicker([]);
         els.cards.innerHTML = `
           <div class="card">
             <div class="cardTop">
@@ -1183,15 +1129,161 @@
         return;
       }
 
-      setTicker(results);
+      setTicker(state.items);
       renderCards();
+
+      if (!silent && added > 0) toast(`${added} new signal${added === 1 ? "" : "s"} added.`);
     }
 
-    function toast(msg) {
-      els.toast.querySelector("span").textContent = msg;
-      els.toast.hidden = false;
-      clearTimeout(window.__t);
-      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
+    function startAutoRefresh() {
+      stopAutoRefresh();
+      state.autoTimer = setInterval(() => refreshAll({ silent: true }), AUTO_REFRESH_MS);
+    }
+    function stopAutoRefresh() {
+      if (state.autoTimer) clearInterval(state.autoTimer);
+      state.autoTimer = null;
+    }
+
+    // Epstein Search: in-page results from CourtListener + clean “Open Source” links for others
+    const EP_SOURCES = [
+      {
+        scope: "doj",
+        name: "DOJ (site search)",
+        tag: "doj",
+        open: (q) => `https://www.justice.gov/search?search_api_fulltext=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "vault",
+        name: "FBI Vault",
+        tag: "vault",
+        open: (q) => `https://vault.fbi.gov/search?SearchableText=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "govinfo",
+        name: "GovInfo",
+        tag: "govinfo",
+        open: (q) => `https://www.govinfo.gov/app/search/%7B%22query%22%3A%22${encodeURIComponent(q)}%22%7D`
+      },
+      {
+        scope: "archives",
+        name: "CourtListener (web)",
+        tag: "courtlistener",
+        open: (q) => `https://www.courtlistener.com/?q=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "archives",
+        name: "Internet Archive",
+        tag: "archives",
+        open: (q) => `https://archive.org/search?query=${encodeURIComponent(q)}`
+      }
+    ];
+
+    const COURTLISTENER_API = "https://www.courtlistener.com/api/rest/v3/search/?type=o&q=";
+    const EP_MAX_RESULTS = 30;
+
+    function safeFetchJson(url, timeoutMs = 9000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), timeoutMs);
+      return fetch(url, { signal: ctrl.signal, headers: { "Accept":"application/json" } })
+        .then(r => (clearTimeout(t), r.ok ? r.json() : null))
+        .catch(() => null);
+    }
+
+    function highlight(text, q) {
+      if (!q) return escapeHtml(text || "");
+      const safe = String(text || "");
+      const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
+      const parts = safe.split(re);
+      const matches = safe.match(re);
+      if (!matches) return escapeHtml(safe);
+      let out = "";
+      for (let i = 0; i < parts.length; i++) {
+        out += escapeHtml(parts[i]);
+        if (matches[i]) out += `<mark>${escapeHtml(matches[i])}</mark>`;
+      }
+      return out;
+    }
+
+    function renderEpsteinResults(results, q, note) {
+      els.epStatus.textContent = note || "Ready.";
+      els.epCount.textContent = String(results.length);
+
+      if (!results.length) {
+        els.epResults.innerHTML = `
+          <div class="epResult" style="grid-column: 1 / -1;">
+            <div class="cardTop">
+              <div class="source">JETTAI</div>
+              <div class="pillTag">No hits</div>
+            </div>
+            <div class="epTitle">No in-page results.</div>
+            <div class="epSmall">Use “Open Sources” to search DOJ/FBI/GovInfo/Archives in new tabs with your query.</div>
+          </div>`;
+        return;
+      }
+
+      els.epResults.innerHTML = results.map((r) => {
+        const title = r.title || "Untitled";
+        const url = r.url || "#";
+        const snippet = r.snippet || "";
+        const source = r.source || "CourtListener";
+        const date = r.date || "—";
+        const tag = r.tag || "court";
+        return `
+          <article class="epResult">
+            <div class="cardTop">
+              <div class="source">${escapeHtml(source)}</div>
+              <div class="pillTag">${escapeHtml(tag)}</div>
+            </div>
+            <div class="epTitle">
+              <a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${highlight(title, q)}</a>
+            </div>
+            <div class="epSmall">${highlight(snippet, q)}</div>
+            <div class="cardBottom" style="margin-top:12px;">
+              <div class="time">${escapeHtml(date)}</div>
+              <a class="read" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open</a>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    function openEpsteinSources(q, scope) {
+      const clean = (q || "").trim();
+      if (!clean) return;
+
+      const targets = EP_SOURCES.filter(s => scope === "all" ? true : s.tag === scope || s.scope === scope);
+      for (const t of targets) window.open(t.open(clean), "_blank", "noopener,noreferrer");
+    }
+
+    async function runEpsteinSearch() {
+      const q = (els.epQ.value || "").trim();
+      const scope = (els.epScope.value || "all").trim();
+
+      if (!q) {
+        renderEpsteinResults([], "", "Type a query to search public sources.");
+        return;
+      }
+
+      const wantsCourtListener = (scope === "all" || scope === "courtlistener");
+      if (!wantsCourtListener) {
+        renderEpsteinResults([], q, "In-page results are CourtListener only. Use “Open Sources” for the rest.");
+        return;
+      }
+
+      els.epResults.innerHTML = `<div class="skeleton epResult"></div><div class="skeleton epResult"></div><div class="skeleton epResult"></div>`;
+      els.epStatus.textContent = "Searching CourtListener…";
+
+      const data = await safeFetchJson(COURTLISTENER_API + encodeURIComponent(q), 9000);
+      const rows = (data && data.results) ? data.results.slice(0, EP_MAX_RESULTS) : [];
+
+      const mapped = rows.map(r => {
+        const url = r.absolute_url ? ("https://www.courtlistener.com" + r.absolute_url) : (r.url || "");
+        const title = r.caseName || r.title || r.description || "Result";
+        const snippet = (r.snippet || r.text || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 220);
+        const date = r.dateFiled || r.dateCreated || r.dateModified || "";
+        return { title, url, snippet, date, source: "CourtListener", tag: "court" };
+      }).filter(x => isValidHttpUrl(x.url));
+
+      renderEpsteinResults(mapped, q, mapped.length ? "CourtListener results loaded." : "No CourtListener results. Use “Open Sources”.");
     }
 
     function bindUI() {
@@ -1200,24 +1292,47 @@
           els.pills.forEach((x) => x.classList.remove("active"));
           p.classList.add("active");
           state.filter = p.dataset.filter || "all";
+          state.visibleCount = INITIAL_RENDER;
           renderCards();
         });
       });
 
-      els.q.addEventListener("input", () => {
+      els.q?.addEventListener("input", () => {
         state.query = els.q.value || "";
+        state.visibleCount = INITIAL_RENDER;
         renderCards();
       });
 
-      els.btnRefresh.addEventListener("click", refreshAll);
+      els.btnRefresh?.addEventListener("click", () => refreshAll({ silent: false }));
 
-      els.btnNotify.addEventListener("click", () => {
+      els.btnNotify?.addEventListener("click", () => {
         els.modal.hidden = false;
         setTimeout(() => document.getElementById("email")?.focus(), 50);
       });
 
-      els.modalClose.addEventListener("click", () => (els.modal.hidden = true));
-      els.modal.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
+      els.modalClose?.addEventListener("click", () => (els.modal.hidden = true));
+      els.modal?.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") refreshAll({ silent: true });
+      });
+
+      els.epRun?.addEventListener("click", runEpsteinSearch);
+      els.epOpenAll?.addEventListener("click", () => {
+        const q = (els.epQ.value || "").trim();
+        const scope = (els.epScope.value || "all").trim();
+        if (!q) return;
+        const mappedScope = scope === "courtlistener" ? "all" : scope;
+        openEpsteinSources(q, mappedScope);
+      });
+      els.epClear?.addEventListener("click", () => {
+        els.epQ.value = "";
+        els.epScope.value = "all";
+        renderEpsteinResults([], "", "Ready.");
+      });
+      els.epQ?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); runEpsteinSearch(); }
+      });
     }
 
     function startField() {
@@ -1309,417 +1424,6 @@
       requestAnimationFrame(draw);
     }
 
-    /* ===================== Epstein Tool (added) ===================== */
-    (function epsteinTool(){
-      // Public mirror/index API base (read-only)
-      // If this service rate-limits you, results will still fail gracefully.
-      const EP_API_BASE = "https://epsteinexposed.com/api/v1";
-
-      const ep = {
-        q: document.getElementById("ep_q"),
-        tabs: document.getElementById("ep_tabs"),
-        presets: document.getElementById("ep_presets"),
-        status: document.getElementById("ep_status"),
-        results: document.getElementById("ep_results"),
-        searchBtn: document.getElementById("ep_searchBtn"),
-        clearBtn: document.getElementById("ep_clearBtn"),
-        personCategory: document.getElementById("ep_personCategory"),
-        docSource: document.getElementById("ep_docSource"),
-        docCategory: document.getElementById("ep_docCategory"),
-        perPage: document.getElementById("ep_perPage"),
-        prevBtn: document.getElementById("ep_prevBtn"),
-        nextBtn: document.getElementById("ep_nextBtn"),
-        pageMeta: document.getElementById("ep_pageMeta"),
-      };
-
-      const epState = {
-        mode: "all",
-        page: 1,
-        per_page: 20,
-        q: "",
-        personCategory: "",
-        docSource: "",
-        docCategory: "",
-        cache: new Map(),
-        inflightKey: "",
-        backoffUntil: 0,
-        lastTotal: null,   // total from last response; used to gate "Next" pagination
-        lastResultCount: 0 // count of items on last response; used when API omits total
-      };
-
-      function epEsc(s){
-        return String(s || "")
-          .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-          .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-      }
-      function epFmtDate(d){
-        if(!d) return "";
-        const dt = new Date(d);
-        if(Number.isNaN(dt.getTime())) return d;
-        return dt.toISOString().slice(0,10);
-      }
-      function epSetStatus(leftHtml, rightText){
-        ep.status.innerHTML = `<span>${leftHtml}</span><span class="epMini">${epEsc(rightText || "")}</span>`;
-      }
-      function epSetActiveTab(mode){
-        epState.mode = mode;
-        epState.page = 1;
-        ep.tabs.querySelectorAll(".epTab").forEach(t=>{
-          t.classList.toggle("active", t.dataset.mode === mode);
-        });
-        ep.pageMeta.textContent = `Page: ${epState.page}`;
-      }
-      function epBuildUrl(){
-        const q = (epState.q || "").trim();
-        const per = epState.per_page;
-
-        if(epState.mode === "people"){
-          const p = new URLSearchParams();
-          if(q) p.set("q", q);
-          if(epState.personCategory) p.set("category", epState.personCategory);
-          p.set("page", epState.page);
-          p.set("per_page", per);
-          return `${EP_API_BASE}/persons?${p.toString()}`;
-        }
-
-        if(epState.mode === "documents"){
-          const p = new URLSearchParams();
-          if(q) p.set("q", q);
-          if(epState.docSource) p.set("source", epState.docSource);
-          if(epState.docCategory) p.set("category", epState.docCategory);
-          p.set("page", epState.page);
-          p.set("per_page", per);
-          return `${EP_API_BASE}/documents?${p.toString()}`;
-        }
-
-        if(epState.mode === "flights"){
-          const p = new URLSearchParams();
-          // Treat query as passenger search if user typed something.
-          if(q) p.set("passenger", q);
-          p.set("page", epState.page);
-          p.set("per_page", per);
-          return `${EP_API_BASE}/flights?${p.toString()}`;
-        }
-
-        if(epState.mode === "emails"){
-          const p = new URLSearchParams();
-          p.set("q", q || "*");
-          p.set("type", "emails");
-          p.set("limit", Math.min(100, per));
-          p.set("page", epState.page);
-          return `${EP_API_BASE}/search?${p.toString()}`;
-        }
-
-        // all
-        const p = new URLSearchParams();
-        p.set("q", q || "*");
-        p.set("limit", Math.min(100, per));
-        p.set("page", epState.page);
-        return `${EP_API_BASE}/search?${p.toString()}`;
-      }
-
-      async function epFetchJson(url){
-        const now = Date.now();
-        if(now < epState.backoffUntil){
-          const secs = Math.ceil((epState.backoffUntil - now)/1000);
-          throw new Error(`Rate limited. Backing off ~${secs}s`);
-        }
-
-        if(epState.cache.has(url)) return epState.cache.get(url);
-
-        const res = await fetch(url, { headers: { "Accept":"application/json" }});
-        if(res.status === 429){
-          epState.backoffUntil = Date.now() + 15_000;
-          throw new Error("Rate limit hit (429). Try again in ~15 seconds.");
-        }
-        if(!res.ok) throw new Error(`Request failed (${res.status})`);
-
-        const data = await res.json();
-        epState.cache.set(url, data);
-        return data;
-      }
-
-      function epMirrorUrl(kind, item){
-        if(kind === "person") return `https://epsteinexposed.com/persons/${encodeURIComponent(item.slug || "")}`;
-        if(kind === "document") return `https://epsteinexposed.com/documents/${encodeURIComponent(item.id)}`;
-        if(kind === "email") return item.url || "https://epsteinexposed.com/emails";
-        if(kind === "flight") return "https://epsteinexposed.com/flights";
-        return "https://epsteinexposed.com";
-      }
-
-      function epRenderItem(kind, item){
-        let kicker = kind.toUpperCase();
-        let title = "";
-        let summary = "";
-        let meta = "";
-        let primaryUrl = "";
-
-        if(kind === "person"){
-          title = item.name || "(unknown)";
-          summary = item.shortBio || "";
-          meta = `category: ${item.category || "unknown"} · docs: ${item?.stats?.documents ?? "?"} · flights: ${item?.stats?.flights ?? "?"}`;
-        } else if(kind === "document"){
-          title = item.title || "(untitled document)";
-          summary = item.summary || "";
-          meta = `date: ${epFmtDate(item.date) || "unknown"} · source: ${item.source || "unknown"} · type: ${item.category || "unknown"}`;
-          primaryUrl = item.sourceUrl || "";
-        } else if(kind === "email"){
-          title = item.subject || item.title || "(email)";
-          summary = item.snippet || item.summary || "";
-          meta = `${epFmtDate(item.date) || "unknown"} · from: ${item.from || "unknown"} · to: ${item.to || "unknown"}`;
-          primaryUrl = item.sourceUrl || "";
-        } else if(kind === "flight"){
-          title = `${epFmtDate(item.date) || "unknown date"} · ${item.origin || "?"} → ${item.destination || "?"}`;
-          summary = (item.passengerNames && item.passengerNames.length)
-            ? `Passengers: ${item.passengerNames.slice(0,10).join(", ")}${item.passengerNames.length > 10 ? "…" : ""}`
-            : "Passenger list not available in this record.";
-          meta = `aircraft: ${item.aircraft || "?"} · pilot: ${item.pilot || "?"} · passengers: ${item.passengerCount ?? "?"}`;
-        }
-
-        const mirror = epMirrorUrl(kind, item);
-
-        const primaryBtn = primaryUrl
-          ? `<a class="epLink primary" href="${epEsc(primaryUrl)}" target="_blank" rel="noreferrer">Open DOJ / Primary</a>`
-          : `<span class="epMini">No DOJ link on record</span>`;
-
-        return `
-          <div class="epItem">
-            <div class="epKicker">${epEsc(kicker)}</div>
-            <div class="epH3">${epEsc(title)}</div>
-            <div class="epP">${epEsc(summary || "(no summary provided)")}</div>
-            <div class="epMini" style="margin-top:8px; line-height:1.5">${epEsc(meta)}</div>
-            <div class="epLinks">
-              <a class="epLink warn" href="${epEsc(mirror)}" target="_blank" rel="noreferrer">Open Mirror</a>
-              ${primaryBtn}
-              <button class="epLink" data-copy="${epEsc(primaryUrl || mirror)}">Copy Link</button>
-            </div>
-          </div>
-        `;
-      }
-
-      function epAttachCopyButtons(){
-        ep.results.querySelectorAll("button[data-copy]").forEach(btn=>{
-          btn.addEventListener("click", async ()=>{
-            const text = btn.getAttribute("data-copy") || "";
-            try{
-              await navigator.clipboard.writeText(text);
-              toast("Copied.");
-            }catch{
-              toast("Copy failed.");
-            }
-          });
-        });
-      }
-
-      function epRender(data){
-        ep.results.innerHTML = "";
-
-        if(!data || data.status !== "ok"){
-          ep.results.innerHTML = `<div class="epItem"><div class="epP">No results.</div></div>`;
-          return;
-        }
-
-        // /search returns grouped results
-        if(epState.mode === "all" || epState.mode === "emails"){
-          const docs = (data.data?.documents?.results) || [];
-          const emails = (data.data?.emails?.results) || [];
-
-          if(epState.mode === "emails"){
-            ep.results.innerHTML = emails.length
-              ? emails.map(e => epRenderItem("email", e)).join("")
-              : `<div class="epItem"><div class="epP">No email results.</div></div>`;
-          } else {
-            const combined = [
-              ...docs.map(d => ({ kind:"document", v:d })),
-              ...emails.map(e => ({ kind:"email", v:e }))
-            ];
-            ep.results.innerHTML = combined.length
-              ? combined.map(x => epRenderItem(x.kind, x.v)).join("")
-              : `<div class="epItem"><div class="epP">No results.</div></div>`;
-          }
-
-          epAttachCopyButtons();
-          return;
-        }
-
-        // list endpoints: data.data is array
-        const arr = Array.isArray(data.data) ? data.data : [];
-        if(!arr.length){
-          ep.results.innerHTML = `<div class="epItem"><div class="epP">No results.</div></div>`;
-          return;
-        }
-
-        const kind =
-          epState.mode === "people" ? "person" :
-          epState.mode === "documents" ? "document" :
-          epState.mode === "flights" ? "flight" : "document";
-
-        ep.results.innerHTML = arr.map(x => epRenderItem(kind, x)).join("");
-        epAttachCopyButtons();
-      }
-
-      function epResultCount(data){
-        if(!data || data.status !== "ok") return 0;
-        if(epState.mode === "all" || epState.mode === "emails"){
-          const docs = (data.data?.documents?.results) || [];
-          const emails = (data.data?.emails?.results) || [];
-          return epState.mode === "emails" ? emails.length : docs.length + emails.length;
-        }
-        const arr = Array.isArray(data.data) ? data.data : [];
-        return arr.length;
-      }
-
-      async function epRun(){
-        epState.q = ep.q.value.trim();
-        ep.pageMeta.textContent = `Page: ${epState.page}`;
-        const url = epBuildUrl();
-
-        epSetStatus("<b>Searching…</b>", `Mode: ${epState.mode}`);
-        const key = url;
-        epState.inflightKey = key;
-
-        try{
-          const data = await epFetchJson(url);
-          if(epState.inflightKey !== key) return;
-
-          const total = data?.meta?.total;
-          epState.lastTotal = total != null ? total : null;
-          epState.lastResultCount = epResultCount(data);
-          epSetStatus(`<b>Done.</b> ${total != null ? `Found ~${total}.` : "Results loaded."}`, `Page ${epState.page}`);
-          epRender(data);
-        }catch(err){
-          epSetStatus(`<b>Couldn’t load.</b> ${epEsc(err.message || "Request failed")}`, "Try again in a moment.");
-          ep.results.innerHTML = `<div class="epItem"><div class="epP">${epEsc(err.message || "Request failed")}</div></div>`;
-        }
-      }
-
-      function epClear(){
-        ep.q.value = "";
-        epState.q = "";
-        epState.page = 1;
-        epState.lastTotal = null;
-        epState.lastResultCount = 0;
-        ep.personCategory.value = "";
-        ep.docSource.value = "";
-        ep.docCategory.value = "";
-        ep.perPage.value = "20";
-        epState.personCategory = "";
-        epState.docSource = "";
-        epState.docCategory = "";
-        epState.per_page = 20;
-        ep.pageMeta.textContent = `Page: ${epState.page}`;
-        epSetStatus("<b>Ready.</b> Type a query or hit a preset.", "Tip: quotes = exact phrase.");
-        ep.results.innerHTML = "";
-      }
-
-      // Debounce search typing
-      let epT = null;
-      function epDebounced(){
-        if(epT) clearTimeout(epT);
-        epT = setTimeout(()=>epRun(), 350);
-      }
-
-      // Events
-      ep.searchBtn.addEventListener("click", epRun);
-      ep.clearBtn.addEventListener("click", epClear);
-      ep.q.addEventListener("input", epDebounced);
-
-      ep.tabs.addEventListener("click", (e)=>{
-        const t = e.target.closest(".epTab");
-        if(!t) return;
-        epSetActiveTab(t.dataset.mode);
-        epRun();
-      });
-
-      ep.presets.addEventListener("click", (e)=>{
-        const b = e.target.closest(".epPreset");
-        if(!b) return;
-
-        const p = b.dataset.preset;
-        if(p === "redactions"){
-          epSetActiveTab("documents");
-          ep.q.value = `"redact" OR "redaction" OR "withheld"`;
-        } else if(p === "npa"){
-          epSetActiveTab("documents");
-          ep.q.value = `"non prosecution" OR "immunity" OR "NPA"`;
-        } else if(p === "plea"){
-          epSetActiveTab("documents");
-          ep.q.value = `"plea" OR "deal" OR "agreement"`;
-        } else if(p === "flight"){
-          epSetActiveTab("flights");
-          ep.q.value = "";
-        } else if(p === "emails"){
-          epSetActiveTab("emails");
-          ep.q.value = "";
-        } else if(p === "money"){
-          epSetActiveTab("documents");
-          ep.q.value = `"trust" OR "fund" OR "wire" OR "bank" OR "account"`;
-        } else if(p === "cover"){
-          epSetActiveTab("documents");
-          ep.q.value = `"no recollection" OR "denied" OR "never met"`;
-        }
-
-        epState.page = 1;
-        ep.pageMeta.textContent = `Page: ${epState.page}`;
-        epRun();
-      });
-
-      ep.personCategory.addEventListener("change", ()=>{
-        epState.personCategory = ep.personCategory.value;
-        epState.page = 1;
-        epRun();
-      });
-      ep.docSource.addEventListener("change", ()=>{
-        epState.docSource = ep.docSource.value;
-        epState.page = 1;
-        epRun();
-      });
-      ep.docCategory.addEventListener("change", ()=>{
-        epState.docCategory = ep.docCategory.value;
-        epState.page = 1;
-        epRun();
-      });
-      ep.perPage.addEventListener("change", ()=>{
-        epState.per_page = parseInt(ep.perPage.value, 10) || 20;
-        epState.page = 1;
-        epRun();
-      });
-
-      ep.prevBtn.addEventListener("click", ()=>{
-        if(epState.page > 1){
-          epState.page -= 1;
-          ep.pageMeta.textContent = `Page: ${epState.page}`;
-          epRun();
-        }
-      });
-      ep.nextBtn.addEventListener("click", ()=>{
-        const total = epState.lastTotal;
-        const count = epState.lastResultCount;
-        const hasNext = total != null
-          ? (epState.page * epState.per_page < total)
-          : (count >= epState.per_page);
-        if(!hasNext) return;
-        epState.page += 1;
-        ep.pageMeta.textContent = `Page: ${epState.page}`;
-        epRun();
-      });
-
-      // Keyboard: / focuses Epstein search when section is near viewport
-      window.addEventListener("keydown", (e)=>{
-        if(e.key === "/"){
-          const rect = document.getElementById("epstein").getBoundingClientRect();
-          const near = rect.top < window.innerHeight && rect.bottom > 0;
-          if(near){
-            e.preventDefault();
-            ep.q.focus();
-          }
-        }
-      });
-
-      // Init
-      epSetStatus("<b>Ready.</b> Type a query or hit a preset.", "Tip: quotes = exact phrase.");
-    })();
-
     (async function init() {
       els.year.textContent = String(new Date().getFullYear());
       els.statSources.textContent = String(FEEDS.length);
@@ -1729,7 +1433,10 @@
 
       bindUI();
       startField();
-      await refreshAll();
+
+      await refreshAll({ silent: false });
+      startAutoRefresh();
+      renderEpsteinResults([], "", "Ready.");
     })();
   </script>
 </body>
