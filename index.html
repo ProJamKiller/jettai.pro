@@ -11,7 +11,6 @@
   <meta property="og:title" content="JETTAI — Signal Before the Sirens">
   <meta property="og:description" content="Free now. Insanely powerful later. Signal before the sirens.">
   <meta property="og:url" content="https://www.jettai.pro">
-  <!-- Swap this to your JETTAI logo PNG/JPG when you have it -->
   <meta property="og:image" content="https://bafybeibrpdahjv2lysufmh5aagpqiegmpox7s6d6wvgkppo5yk247gduy4.ipfs.dweb.link?filename=_users_0e5dad68-8ede-4823-947b-ba2d75c8a8ea_generated_8e5067fe-7429-4301-9565-290fee0d7039_generated_video.mp4">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cdefs%3E%3CradialGradient id='g' cx='30%25' cy='28%25' r='85%25'%3E%3Cstop offset='0%25' stop-color='%2378a0ff'/%3E%3Cstop offset='55%25' stop-color='%23ff78c8'/%3E%3Cstop offset='100%25' stop-color='%2378ffd6'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='64' fill='%2307080b'/%3E%3Crect x='18' y='18' width='220' height='220' rx='56' fill='url(%23g)' opacity='.18'/%3E%3Crect x='18' y='18' width='220' height='220' rx='56' fill='none' stroke='rgba(255,255,255,.22)' stroke-width='6'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' font-family='Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial' font-size='82' font-weight='700' fill='%23e9ecf1' letter-spacing='6'%3EJ%3C/text%3E%3C/svg%3E" />
@@ -449,6 +448,67 @@
     .panel h3{margin:0 0 8px; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,241,.86)}
     .panel p{margin:0 0 12px; color:var(--muted); line-height:1.55}
 
+    /* Epstein Search UI */
+    .epControls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .epControls input, .epControls select{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      background:rgba(0,0,0,.28);
+      color:var(--fg);
+      padding:11px 12px;
+      outline:none;
+    }
+    .epControls input{flex:1; min-width:220px}
+    .epControls select{min-width:210px}
+    .epMetaRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      color:rgba(167,176,192,.90);
+      font-size:12px;
+      margin-bottom:10px;
+    }
+    .epResults{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .epResult{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      min-height:150px;
+      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .epResult:hover{
+      transform: translateY(-2px);
+      border-color:rgba(255,255,255,.20);
+      background:rgba(255,255,255,.05);
+    }
+    .epTitle{margin:6px 0 8px; font-size:15px; line-height:1.35; font-weight:600}
+    .epTitle a{color:var(--fg); text-decoration:none}
+    .epTitle a:hover{text-decoration:underline}
+    .epSmall{font-size:12px; color:rgba(167,176,192,.90); line-height:1.45}
+    mark{
+      background: linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.22), rgba(120,255,214,.16));
+      color: var(--fg);
+      padding:0 .15em;
+      border-radius:.35em;
+      border:1px solid rgba(255,255,255,.12);
+    }
+
     .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
     .small{color:rgba(167,176,192,.86); font-size:12px}
     .small a{color:rgba(233,236,241,.86); text-decoration:none}
@@ -514,6 +574,7 @@
       .twoCol{grid-template-columns: 1fr}
       .threeCol{grid-template-columns: 1fr}
       .mutinyWrap{grid-template-columns: 1fr}
+      .epResults{grid-template-columns: 1fr}
       nav.nav{display:none}
       .hero h1{font-size:44px}
     }
@@ -547,6 +608,7 @@
       <a href="#mutiny">Mutiny</a>
       <a href="#about">About</a>
       <a href="#future">Subscriptions</a>
+      <a href="#epstein">Epstein</a>
     </nav>
 
     <div class="cta">
@@ -588,7 +650,7 @@
         <div class="heroActions">
           <a class="btn solid" href="#signals">View Signals</a>
           <button class="btn ghost" id="btnRefresh">Refresh</button>
-          <a class="btn ghost" href="#mutiny">Mutiny Report</a>
+          <a class="btn ghost" href="#epstein">Epstein Files</a>
         </div>
 
         <div class="fineprint">
@@ -736,6 +798,44 @@
           <button class="btn ghost" disabled>Coming Soon</button>
         </div>
       </div>
+    </section>
+
+    <!-- Epstein Search (public records federated search + in-page results where possible) -->
+    <section id="epstein" class="section">
+      <div class="sectionHead">
+        <h2>Epstein Files Search</h2>
+        <p>Search public records + archives. Opens sources cleanly. No “could not load” garbage.</p>
+      </div>
+
+      <div class="panel">
+        <div class="epControls">
+          <input id="epQ" type="search" placeholder="Search terms (names, aliases, locations, docket IDs…)" autocomplete="off" />
+          <select id="epScope" aria-label="Scope filter">
+            <option value="all">All sources</option>
+            <option value="courtlistener">CourtListener (in-page results)</option>
+            <option value="doj">DOJ site search</option>
+            <option value="vault">FBI Vault search</option>
+            <option value="govinfo">GovInfo search</option>
+            <option value="archives">Archives / reporting</option>
+          </select>
+          <button class="btn solid" id="epRun">Search</button>
+          <button class="btn ghost" id="epOpenAll">Open Sources</button>
+          <button class="btn ghost" id="epClear">Clear</button>
+        </div>
+
+        <div class="epMetaRow">
+          <div><span id="epStatus">Ready.</span></div>
+          <div><span id="epCount">0</span> results</div>
+        </div>
+
+        <div class="epResults" id="epResults"></div>
+
+        <div class="legal">
+          <div class="small">
+            “Open Sources” launches official search pages in new tabs using your query. In-page results come from CourtListener (public court docs).
+          </div>
+        </div>
+      </div>
 
       <div class="legal">
         <div class="small">
@@ -745,9 +845,7 @@
     </section>
   </main>
 
-  <div class="toast" id="toast" hidden>
-    <span>Update request received.</span>
-  </div>
+  <div class="toast" id="toast" hidden><span></span></div>
 
   <div class="modal" id="modal" hidden>
     <div class="modalCard">
@@ -756,9 +854,7 @@
         <button class="x" id="modalClose" aria-label="Close">✕</button>
       </div>
 
-      <p class="modalText">
-        Drop your email. You’ll get occasional signal drops. No spam.
-      </p>
+      <p class="modalText">Drop your email. You’ll get occasional signal drops. No spam.</p>
 
       <form id="notifyForm" class="form" action="https://formsubmit.co/fletcher@jamkillerproductions.io" method="POST">
         <input id="email" name="email" type="email" placeholder="you@domain.com" required />
@@ -775,20 +871,13 @@
 
   <script>
     const FEEDS = [
-      // Investigations / accountability
       { name: "ProPublica", tag: "investigations", url: "https://www.propublica.org/feeds/propublica/main" },
       { name: "ICIJ", tag: "investigations", url: "https://www.icij.org/feed/" },
-
-      // US Gov / Law
       { name: "DOJ News", tag: "gov", url: "https://www.justice.gov/news/rss?m=1" },
       { name: "FBI News", tag: "gov", url: "https://www.fbi.gov/feeds/news" },
       { name: "US Courts News", tag: "law", url: "https://news.uscourts.gov/feed" },
-
-      // Finance / market-regulation signal
       { name: "SEC Press Releases", tag: "finance", url: "https://www.sec.gov/news/pressreleases.rss" },
       { name: "CFTC Press Releases", tag: "finance", url: "https://www.cftc.gov/PressRoom/PressReleases/index.xml" },
-
-      // High-quality mainstream feeds for volume + breadth
       { name: "Reuters Top News", tag: "all", url: "https://feeds.reuters.com/reuters/topNews" },
       { name: "AP Top News", tag: "all", url: "https://apnews.com/apf-topnews?output=rss" },
       { name: "BBC World", tag: "all", url: "http://feeds.bbci.co.uk/news/world/rss.xml" },
@@ -797,12 +886,11 @@
 
     const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
 
-    // AUTO UPDATE SETTINGS
-    const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
-    const MAX_ITEMS_IN_MEMORY = 400;       // prevent runaway growth
-    const INITIAL_RENDER = 36;             // cards to show initially
-    const LOAD_MORE_STEP = 24;             // cards added per "Load more"
-    const PER_FEED_LIMIT = 18;             // items pulled per feed
+    const AUTO_REFRESH_MS = 5 * 60 * 1000;
+    const MAX_ITEMS_IN_MEMORY = 400;
+    const INITIAL_RENDER = 36;
+    const LOAD_MORE_STEP = 24;
+    const PER_FEED_LIMIT = 18;
 
     const els = {
       cards: document.getElementById("cards"),
@@ -817,7 +905,16 @@
       btnNotify: document.getElementById("btnNotify"),
       modal: document.getElementById("modal"),
       modalClose: document.getElementById("modalClose"),
-      toast: document.getElementById("toast")
+      toast: document.getElementById("toast"),
+
+      epQ: document.getElementById("epQ"),
+      epScope: document.getElementById("epScope"),
+      epRun: document.getElementById("epRun"),
+      epOpenAll: document.getElementById("epOpenAll"),
+      epClear: document.getElementById("epClear"),
+      epStatus: document.getElementById("epStatus"),
+      epCount: document.getElementById("epCount"),
+      epResults: document.getElementById("epResults"),
     };
 
     const state = {
@@ -826,7 +923,7 @@
       filter: "all",
       query: "",
       visibleCount: INITIAL_RENDER,
-      autoTimer: null
+      autoTimer: null,
     };
 
     const escapeHtml = (str) => String(str || "")
@@ -846,6 +943,14 @@
     };
 
     const nowStamp = () => new Date().toLocaleString([], { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+
+    function toast(msg) {
+      if (!els.toast) return;
+      els.toast.querySelector("span").textContent = msg;
+      els.toast.hidden = false;
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
+    }
 
     function isValidHttpUrl(u) {
       return /^https?:\/\/.+/i.test(String(u || ""));
@@ -969,7 +1074,6 @@
         const link = String(it.link || "").trim();
         if (!title) continue;
         if (!isValidHttpUrl(link)) continue;
-
         if (state.seen.has(it.id) || state.seen.has(link)) continue;
 
         state.seen.add(it.id);
@@ -983,13 +1087,9 @@
         state.items = state.items.slice(0, MAX_ITEMS_IN_MEMORY);
 
         const s = new Set();
-        for (const it of state.items) {
-          s.add(it.id);
-          s.add(it.link);
-        }
+        for (const it of state.items) { s.add(it.id); s.add(it.link); }
         state.seen = s;
       }
-
       return added;
     }
 
@@ -1003,13 +1103,10 @@
         try {
           const items = await fetchFeed(f);
           gathered.push(...items);
-        } catch {
-          /* fail silently */
-        }
+        } catch { }
       }
 
       gathered.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
-
       const added = mergeNewItems(gathered);
 
       state.items.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
@@ -1035,27 +1132,158 @@
       setTicker(state.items);
       renderCards();
 
-      if (!silent && added > 0) {
-        toast(`${added} new signal${added === 1 ? "" : "s"} added.`);
-      }
-    }
-
-    function toast(msg) {
-      if (!els.toast) return;
-      els.toast.querySelector("span").textContent = msg;
-      els.toast.hidden = false;
-      clearTimeout(window.__t);
-      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
+      if (!silent && added > 0) toast(`${added} new signal${added === 1 ? "" : "s"} added.`);
     }
 
     function startAutoRefresh() {
       stopAutoRefresh();
       state.autoTimer = setInterval(() => refreshAll({ silent: true }), AUTO_REFRESH_MS);
     }
-
     function stopAutoRefresh() {
       if (state.autoTimer) clearInterval(state.autoTimer);
       state.autoTimer = null;
+    }
+
+    // Epstein Search: in-page results from CourtListener + clean “Open Source” links for others
+    const EP_SOURCES = [
+      {
+        scope: "doj",
+        name: "DOJ (site search)",
+        tag: "doj",
+        open: (q) => `https://www.justice.gov/search?search_api_fulltext=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "vault",
+        name: "FBI Vault",
+        tag: "vault",
+        open: (q) => `https://vault.fbi.gov/search?SearchableText=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "govinfo",
+        name: "GovInfo",
+        tag: "govinfo",
+        open: (q) => `https://www.govinfo.gov/app/search/%7B%22query%22%3A%22${encodeURIComponent(q)}%22%7D`
+      },
+      {
+        scope: "archives",
+        name: "CourtListener (web)",
+        tag: "courtlistener",
+        open: (q) => `https://www.courtlistener.com/?q=${encodeURIComponent(q)}`
+      },
+      {
+        scope: "archives",
+        name: "Internet Archive",
+        tag: "archives",
+        open: (q) => `https://archive.org/search?query=${encodeURIComponent(q)}`
+      }
+    ];
+
+    const COURTLISTENER_API = "https://www.courtlistener.com/api/rest/v3/search/?type=o&q=";
+    const EP_MAX_RESULTS = 30;
+
+    function safeFetchJson(url, timeoutMs = 9000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), timeoutMs);
+      return fetch(url, { signal: ctrl.signal, headers: { "Accept":"application/json" } })
+        .then(r => (clearTimeout(t), r.ok ? r.json() : null))
+        .catch(() => null);
+    }
+
+    function highlight(text, q) {
+      if (!q) return escapeHtml(text || "");
+      const safe = String(text || "");
+      const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
+      const parts = safe.split(re);
+      const matches = safe.match(re);
+      if (!matches) return escapeHtml(safe);
+      let out = "";
+      for (let i = 0; i < parts.length; i++) {
+        out += escapeHtml(parts[i]);
+        if (matches[i]) out += `<mark>${escapeHtml(matches[i])}</mark>`;
+      }
+      return out;
+    }
+
+    function renderEpsteinResults(results, q, note) {
+      els.epStatus.textContent = note || "Ready.";
+      els.epCount.textContent = String(results.length);
+
+      if (!results.length) {
+        els.epResults.innerHTML = `
+          <div class="epResult" style="grid-column: 1 / -1;">
+            <div class="cardTop">
+              <div class="source">JETTAI</div>
+              <div class="pillTag">No hits</div>
+            </div>
+            <div class="epTitle">No in-page results.</div>
+            <div class="epSmall">Use “Open Sources” to search DOJ/FBI/GovInfo/Archives in new tabs with your query.</div>
+          </div>`;
+        return;
+      }
+
+      els.epResults.innerHTML = results.map((r) => {
+        const title = r.title || "Untitled";
+        const url = r.url || "#";
+        const snippet = r.snippet || "";
+        const source = r.source || "CourtListener";
+        const date = r.date || "—";
+        const tag = r.tag || "court";
+        return `
+          <article class="epResult">
+            <div class="cardTop">
+              <div class="source">${escapeHtml(source)}</div>
+              <div class="pillTag">${escapeHtml(tag)}</div>
+            </div>
+            <div class="epTitle">
+              <a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${highlight(title, q)}</a>
+            </div>
+            <div class="epSmall">${highlight(snippet, q)}</div>
+            <div class="cardBottom" style="margin-top:12px;">
+              <div class="time">${escapeHtml(date)}</div>
+              <a class="read" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open</a>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    function openEpsteinSources(q, scope) {
+      const clean = (q || "").trim();
+      if (!clean) return;
+
+      const targets = EP_SOURCES.filter(s => scope === "all" ? true : s.tag === scope || s.scope === scope);
+      for (const t of targets) window.open(t.open(clean), "_blank", "noopener,noreferrer");
+    }
+
+    async function runEpsteinSearch() {
+      const q = (els.epQ.value || "").trim();
+      const scope = (els.epScope.value || "all").trim();
+
+      if (!q) {
+        renderEpsteinResults([], "", "Type a query to search public sources.");
+        return;
+      }
+
+      const wantsCourtListener = (scope === "all" || scope === "courtlistener");
+      if (!wantsCourtListener) {
+        renderEpsteinResults([], q, "In-page results are CourtListener only. Use “Open Sources” for the rest.");
+        return;
+      }
+
+      els.epResults.innerHTML = `<div class="skeleton epResult"></div><div class="skeleton epResult"></div><div class="skeleton epResult"></div>`;
+      els.epStatus.textContent = "Searching CourtListener…";
+
+      const data = await safeFetchJson(COURTLISTENER_API + encodeURIComponent(q), 9000);
+      const rows = (data && data.results) ? data.results.slice(0, EP_MAX_RESULTS) : [];
+
+      const mapped = rows.map(r => {
+        const url = r.absolute_url ? ("https://www.courtlistener.com" + r.absolute_url) : (r.url || "");
+        const title = r.caseName || r.title || r.description || "Result";
+        const snippet = (r.snippet || r.text || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 220);
+        const date = r.dateFiled || r.dateCreated || r.dateModified || "";
+        return { title, url, snippet, date, source: "CourtListener", tag: "court" };
+      }).filter(x => isValidHttpUrl(x.url));
+
+      renderEpsteinResults(mapped, q, mapped.length ? "CourtListener results loaded." : "No CourtListener results. Use “Open Sources”.");
     }
 
     function bindUI() {
@@ -1069,24 +1297,41 @@
         });
       });
 
-      els.q.addEventListener("input", () => {
+      els.q?.addEventListener("input", () => {
         state.query = els.q.value || "";
         state.visibleCount = INITIAL_RENDER;
         renderCards();
       });
 
-      els.btnRefresh.addEventListener("click", () => refreshAll({ silent: false }));
+      els.btnRefresh?.addEventListener("click", () => refreshAll({ silent: false }));
 
-      els.btnNotify.addEventListener("click", () => {
+      els.btnNotify?.addEventListener("click", () => {
         els.modal.hidden = false;
         setTimeout(() => document.getElementById("email")?.focus(), 50);
       });
 
-      els.modalClose.addEventListener("click", () => (els.modal.hidden = true));
-      els.modal.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
+      els.modalClose?.addEventListener("click", () => (els.modal.hidden = true));
+      els.modal?.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") refreshAll({ silent: true });
+      });
+
+      els.epRun?.addEventListener("click", runEpsteinSearch);
+      els.epOpenAll?.addEventListener("click", () => {
+        const q = (els.epQ.value || "").trim();
+        const scope = (els.epScope.value || "all").trim();
+        if (!q) return;
+        const mappedScope = scope === "courtlistener" ? "all" : scope;
+        openEpsteinSources(q, mappedScope);
+      });
+      els.epClear?.addEventListener("click", () => {
+        els.epQ.value = "";
+        els.epScope.value = "all";
+        renderEpsteinResults([], "", "Ready.");
+      });
+      els.epQ?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); runEpsteinSearch(); }
       });
     }
 
@@ -1191,6 +1436,7 @@
 
       await refreshAll({ silent: false });
       startAutoRefresh();
+      renderEpsteinResults([], "", "Ready.");
     })();
   </script>
 </body>
