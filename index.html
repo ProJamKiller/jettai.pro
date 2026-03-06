@@ -17,29 +17,43 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#07080b;
+      --bg-soft:#0d1017;
       --fg:#e9ecf1;
       --muted:#a7b0c0;
-      --line:rgba(255,255,255,.12);
+      --muted-2:#8892a4;
+      --line:rgba(255,255,255,.10);
       --line2:rgba(255,255,255,.18);
-      --shadow: 0 22px 70px rgba(0,0,0,.60);
-      --serif: "DM Serif Display", serif;
-      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --line-strong:rgba(255,255,255,.22);
+      --panel:rgba(255,255,255,.045);
+      --panel-2:rgba(255,255,255,.06);
+      --shadow:0 24px 80px rgba(0,0,0,.58);
+      --shadow-sm:0 14px 42px rgba(0,0,0,.28);
+      --serif:"DM Serif Display", serif;
+      --sans:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
-      --a1: rgba(120,160,255,.96);
-      --a2: rgba(255,120,200,.96);
-      --a3: rgba(120,255,214,.88);
+      --a1:rgba(120,160,255,.96);
+      --a2:rgba(255,120,200,.96);
+      --a3:rgba(120,255,214,.88);
 
-      --hl1: rgba(120,160,255,.28);
-      --hl2: rgba(255,120,200,.22);
-      --hl3: rgba(120,255,214,.16);
+      --hl1:rgba(120,160,255,.28);
+      --hl2:rgba(255,120,200,.22);
+      --hl3:rgba(120,255,214,.16);
+
+      --radius-xs:12px;
+      --radius-sm:14px;
+      --radius-md:18px;
+      --radius-lg:22px;
+
+      --ease:cubic-bezier(.22,.61,.36,1);
     }
 
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     html,body{height:100%}
     body{
       margin:0;
@@ -47,7 +61,11 @@
       color:var(--fg);
       background:var(--bg);
       overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
+
+    a, button, input, select { -webkit-tap-highlight-color: transparent; }
 
     #field{position:fixed; inset:0; width:100%; height:100%; z-index:-4}
     .vignette{
@@ -65,7 +83,7 @@
       opacity:.10;
       pointer-events:none;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+      mix-blend-mode:overlay;
     }
 
     header.topbar{
@@ -73,27 +91,30 @@
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 20px;
       border-bottom:1px solid var(--line);
-      background:rgba(7,8,11,.60);
-      backdrop-filter: blur(16px);
+      background:rgba(7,8,11,.58);
+      backdrop-filter:blur(18px) saturate(120%);
+      box-shadow:0 6px 28px rgba(0,0,0,.14);
     }
+
     .brand{display:flex; align-items:center; gap:14px}
     .sigil{
-      width:40px; height:40px; border-radius:14px;
+      width:42px; height:42px; border-radius:15px;
       border:1px solid var(--line2);
       overflow:hidden;
       position:relative;
-      box-shadow: 0 14px 38px rgba(0,0,0,.42);
+      box-shadow:0 14px 38px rgba(0,0,0,.42);
       background:
         radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 45%),
         linear-gradient(135deg, rgba(120,160,255,.18), rgba(255,120,200,.10));
+      isolation:isolate;
     }
     .sigil::after{
       content:"";
       position:absolute; inset:-50%;
-      background: conic-gradient(from 180deg, rgba(120,160,255,.0), rgba(120,160,255,.20), rgba(255,120,200,.20), rgba(120,255,214,.16), rgba(120,160,255,.0));
-      animation: spin 7.5s linear infinite;
+      background:conic-gradient(from 180deg, rgba(120,160,255,.0), rgba(120,160,255,.20), rgba(255,120,200,.20), rgba(120,255,214,.16), rgba(120,160,255,.0));
+      animation:spin 7.5s linear infinite;
       opacity:.92;
-      mix-blend-mode: screen;
+      mix-blend-mode:screen;
       pointer-events:none;
     }
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -102,131 +123,202 @@
       width:100%; height:100%;
       object-fit:cover;
       opacity:.86;
-      filter: contrast(1.05) saturate(1.1);
+      filter:contrast(1.05) saturate(1.1);
     }
 
     .brandtext .wordmark{
       font-family:var(--serif);
       letter-spacing:.08em;
       font-size:18px;
+      line-height:1;
     }
-    .brandtext .tagline{color:var(--muted); font-size:12px; margin-top:2px}
+    .brandtext .tagline{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+      letter-spacing:.02em;
+    }
 
-    nav.nav{display:flex; gap:14px}
+    nav.nav{display:flex; gap:8px}
     nav.nav a{
       color:var(--muted);
       text-decoration:none;
       font-size:13px;
-      padding:8px 10px;
+      padding:9px 12px;
       border-radius:12px;
-      transition: all .18s ease;
+      transition:all .2s var(--ease);
+      border:1px solid transparent;
     }
-    nav.nav a:hover{color:var(--fg); background:rgba(255,255,255,.06)}
+    nav.nav a:hover{
+      color:var(--fg);
+      background:rgba(255,255,255,.055);
+      border-color:rgba(255,255,255,.08);
+    }
+
     .cta{display:flex; gap:10px}
 
     .btn{
       border:1px solid var(--line);
       background:transparent;
       color:var(--fg);
-      padding:10px 12px;
+      padding:10px 13px;
       border-radius:14px;
       font-size:13px;
+      font-weight:500;
       cursor:pointer;
-      transition: all .18s ease;
+      transition:
+        transform .18s var(--ease),
+        border-color .18s var(--ease),
+        background .18s var(--ease),
+        opacity .18s var(--ease),
+        box-shadow .18s var(--ease);
       user-select:none;
       text-decoration:none;
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       position:relative;
       overflow:hidden;
+      min-height:40px;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0)}
+    .btn:focus-visible,
+    .pill:focus-visible,
+    .search input:focus-visible,
+    .epControls input:focus-visible,
+    .epControls select:focus-visible,
+    form.form input:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(120,160,255,.18);
+      border-color:rgba(120,160,255,.42);
     }
     .btn.solid{
       border-color:rgba(255,255,255,.18);
-      background: linear-gradient(135deg, rgba(120,160,255,.26), rgba(255,120,200,.18));
-      box-shadow: 0 14px 44px rgba(0,0,0,.40);
+      background:linear-gradient(135deg, rgba(120,160,255,.26), rgba(255,120,200,.18));
+      box-shadow:0 14px 44px rgba(0,0,0,.40);
     }
     .btn.solid::after{
       content:"";
       position:absolute; inset:-60% -40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 55%);
-      transform: rotate(18deg);
+      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 55%);
+      transform:rotate(18deg);
       opacity:.75;
-      transition: opacity .2s ease;
+      transition:opacity .2s ease;
       pointer-events:none;
     }
-    .btn.ghost:hover{background:rgba(255,255,255,.06)}
-    .btn.solid:hover{transform: translateY(-1px); border-color:rgba(255,255,255,.26)}
+    .btn.ghost{
+      background:rgba(255,255,255,.02);
+    }
+    .btn.ghost:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.18);
+    }
+    .btn.solid:hover{
+      border-color:rgba(255,255,255,.26);
+      box-shadow:0 18px 48px rgba(0,0,0,.45);
+    }
     .btn.solid:hover::after{opacity:1}
-    .btn:disabled{opacity:.45; cursor:not-allowed}
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none !important;
+    }
 
-    main.wrap{max-width:1120px; margin:0 auto; padding:28px 20px 90px}
+    main.wrap{max-width:1120px; margin:0 auto; padding:32px 20px 96px}
 
     section.hero{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:22px;
-      padding:22px 0 8px;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      padding:26px 0 10px;
       align-items:stretch;
     }
     .hero h1{
       font-family:var(--serif);
-      font-size:54px;
+      font-size:clamp(42px, 7vw, 56px);
       line-height:1.01;
-      margin:0 0 14px;
+      margin:0 0 16px;
+      letter-spacing:-.02em;
     }
     .accent{
-      background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
+      background:linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
-      text-shadow: 0 0 20px rgba(120,160,255,.12);
+      text-shadow:0 0 20px rgba(120,160,255,.12);
     }
-    .lede{color:var(--muted); font-size:16px; line-height:1.58; max-width:60ch}
+    .lede{
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.62;
+      max-width:62ch;
+    }
 
     .hl{
       padding:0 .25em;
       border-radius:.45em;
-      background: linear-gradient(135deg, var(--hl1), var(--hl2), var(--hl3));
-      box-decoration-break: clone;
-      -webkit-box-decoration-break: clone;
+      background:linear-gradient(135deg, var(--hl1), var(--hl2), var(--hl3));
+      box-decoration-break:clone;
+      -webkit-box-decoration-break:clone;
       border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 0 0 1px rgba(0,0,0,.18) inset, 0 12px 34px rgba(0,0,0,.20);
+      box-shadow:0 0 0 1px rgba(0,0,0,.18) inset, 0 12px 34px rgba(0,0,0,.20);
     }
     .hl.strong{
-      background: linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.26), rgba(120,255,214,.20));
-      border-color: rgba(255,255,255,.14);
+      background:linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.26), rgba(120,255,214,.20));
+      border-color:rgba(255,255,255,.14);
     }
 
-    .heroStats{display:flex; gap:12px; margin:18px 0 14px; flex-wrap:wrap}
+    .heroStats{
+      display:flex;
+      gap:12px;
+      margin:18px 0 14px;
+      flex-wrap:wrap;
+    }
     .stat{
       min-width:170px;
-      padding:12px 14px;
+      padding:13px 14px;
       border:1px solid var(--line);
       border-radius:16px;
       background:rgba(255,255,255,.04);
-      box-shadow: 0 10px 28px rgba(0,0,0,.18);
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+      backdrop-filter:blur(6px);
     }
-    .statNum{font-size:20px; font-weight:600}
-    .statLabel{color:var(--muted); font-size:12px; margin-top:4px}
+    .statNum{
+      font-size:20px;
+      font-weight:700;
+      letter-spacing:-.02em;
+    }
+    .statLabel{
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+    }
 
     .heroActions{display:flex; gap:10px; margin:12px 0 10px; flex-wrap:wrap}
-    .fineprint{color:rgba(233,236,241,.75); font-size:12px}
+    .fineprint{
+      color:rgba(233,236,241,.75);
+      font-size:12px;
+      letter-spacing:.01em;
+    }
 
     .glassCard{
       border:1px solid var(--line);
-      border-radius:20px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      box-shadow: var(--shadow);
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow:var(--shadow);
       padding:16px;
       overflow:hidden;
       position:relative;
+      min-height:100%;
     }
     .glassCard::before{
       content:"";
       position:absolute; inset:-2px;
-      background: linear-gradient(135deg, rgba(120,160,255,.35), rgba(255,120,200,.22), rgba(120,255,214,.18));
-      filter: blur(18px);
+      background:linear-gradient(135deg, rgba(120,160,255,.35), rgba(255,120,200,.22), rgba(120,255,214,.18));
+      filter:blur(18px);
       opacity:.30;
       pointer-events:none;
     }
@@ -237,41 +329,79 @@
       text-transform:uppercase;
       color:rgba(233,236,241,.86);
     }
-    .glassLine{position:relative; height:1px; background:var(--line); margin:10px 0 12px}
-    .glassBullets{position:relative; display:flex; flex-direction:column; gap:10px; min-height:190px}
+    .glassLine{
+      position:relative;
+      height:1px;
+      background:var(--line);
+      margin:10px 0 12px;
+    }
+    .glassBullets{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:218px;
+    }
     .tick{
-      padding:10px 10px;
+      padding:11px 11px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.09);
-      background:rgba(0,0,0,.22);
+      background:rgba(0,0,0,.24);
       color:rgba(233,236,241,.92);
-      animation: floatin .8s ease both;
-      transform: translateZ(0);
+      animation:floatin .8s ease both;
+      transform:translateZ(0);
+      line-height:1.4;
     }
-    @keyframes floatin{from{opacity:0; transform: translateY(10px)} to{opacity:1; transform: translateY(0)}}
-    .glassFooter{position:relative; margin-top:12px; color:var(--muted); font-size:12px; display:flex; align-items:center; gap:8px}
+    @keyframes floatin{
+      from{opacity:0; transform:translateY(10px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+    .glassFooter{
+      position:relative;
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
     .dot{
       width:8px; height:8px; border-radius:99px;
       background:rgba(120,160,255,.95);
       box-shadow:0 0 26px rgba(120,160,255,.70);
-      animation: pulse 2.4s ease-in-out infinite;
+      animation:pulse 2.4s ease-in-out infinite;
     }
     @keyframes pulse{
       0%,100%{transform:scale(1); opacity:.9}
       50%{transform:scale(1.35); opacity:1}
     }
 
-    section.section{padding:42px 0 0}
-    .sectionHead h2{margin:0 0 8px; font-family:var(--serif); font-size:34px}
-    .sectionHead p{margin:0 0 18px; color:var(--muted)}
+    section.section{padding:46px 0 0}
+    .sectionHead h2{
+      margin:0 0 8px;
+      font-family:var(--serif);
+      font-size:34px;
+      letter-spacing:-.01em;
+    }
+    .sectionHead p{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.55;
+    }
 
     .toolbar{
-      display:flex; justify-content:space-between; align-items:center;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
       gap:12px;
-      margin-bottom:14px;
+      margin-bottom:16px;
       flex-wrap:wrap;
     }
-    .pillset{display:flex; gap:8px; flex-wrap:wrap}
+    .pillset{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
     .pill{
       border:1px solid var(--line);
       background:rgba(255,255,255,.03);
@@ -279,30 +409,54 @@
       padding:9px 12px;
       border-radius:999px;
       font-size:12px;
+      font-weight:500;
       cursor:pointer;
-      transition: all .18s ease;
+      transition:all .18s var(--ease);
+      min-height:38px;
     }
-    .pill:hover{color:var(--fg); background:rgba(255,255,255,.06)}
+    .pill:hover{
+      color:var(--fg);
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.16);
+    }
     .pill.active{
       color:var(--fg);
       background:rgba(255,255,255,.09);
-      border-color:rgba(255,255,255,.20);
+      border-color:rgba(255,255,255,.22);
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
     }
 
+    .search{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
     .search input{
-      width:min(360px, 90vw);
+      width:min(380px, 90vw);
       border:1px solid var(--line);
       border-radius:14px;
-      background:rgba(0,0,0,.28);
+      background:rgba(0,0,0,.30);
       color:var(--fg);
       padding:11px 12px;
       outline:none;
+      transition:border-color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
     }
     .search input::placeholder{color:rgba(167,176,192,.75)}
 
+    .resultsMeta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:12px;
+    }
+
     .grid{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:12px;
     }
     .card{
@@ -310,28 +464,43 @@
       border-radius:18px;
       background:rgba(255,255,255,.04);
       padding:14px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.22);
-      min-height:160px;
+      box-shadow:0 12px 36px rgba(0,0,0,.22);
+      min-height:174px;
       position:relative;
       overflow:hidden;
-      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+      transition:
+        transform .16s var(--ease),
+        border-color .16s var(--ease),
+        background .16s var(--ease),
+        box-shadow .16s var(--ease);
     }
     .card::before{
       content:"";
       position:absolute; inset:-1px;
-      background: linear-gradient(135deg, rgba(120,160,255,.18), rgba(255,120,200,.12), rgba(120,255,214,.10));
+      background:linear-gradient(135deg, rgba(120,160,255,.18), rgba(255,120,200,.12), rgba(120,255,214,.10));
       opacity:0;
-      transition: opacity .18s ease;
+      transition:opacity .18s var(--ease);
       pointer-events:none;
     }
     .card:hover{
-      transform: translateY(-2px);
+      transform:translateY(-3px);
       border-color:rgba(255,255,255,.20);
-      background:rgba(255,255,255,.05);
+      background:rgba(255,255,255,.055);
+      box-shadow:0 18px 42px rgba(0,0,0,.24);
     }
-    .card:hover::before{opacity:.35}
-    .cardTop{position:relative; display:flex; justify-content:space-between; align-items:center; gap:10px}
-    .source{font-size:12px; color:rgba(233,236,241,.80)}
+    .card:hover::before{opacity:.38}
+    .cardTop{
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .source{
+      font-size:12px;
+      color:rgba(233,236,241,.82);
+      line-height:1.35;
+    }
     .pillTag{
       font-size:11px;
       padding:6px 9px;
@@ -340,38 +509,92 @@
       color:rgba(233,236,241,.86);
       background:rgba(0,0,0,.18);
       white-space:nowrap;
+      text-transform:capitalize;
     }
-    .title{position:relative; margin:10px 0 8px; font-size:15px; line-height:1.35; font-weight:600}
-    .title a{color:var(--fg); text-decoration:none}
+    .title{
+      position:relative;
+      margin:10px 0 8px;
+      font-size:15px;
+      line-height:1.42;
+      font-weight:700;
+      letter-spacing:-.01em;
+    }
+    .title a{
+      color:var(--fg);
+      text-decoration:none;
+    }
     .title a:hover{text-decoration:underline}
-    .meta{position:relative; font-size:12px; color:var(--muted); line-height:1.4}
-    .cardBottom{position:relative; margin-top:10px; display:flex; justify-content:space-between; align-items:end; gap:10px}
-    .time{font-size:11px; color:rgba(167,176,192,.90)}
+    .meta{
+      position:relative;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .cardBottom{
+      position:relative;
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:10px;
+    }
+    .time{
+      font-size:11px;
+      color:rgba(167,176,192,.90);
+      line-height:1.4;
+    }
     .read{
-      font-size:12px; color:rgba(233,236,241,.92);
+      font-size:12px;
+      color:rgba(233,236,241,.92);
       text-decoration:none;
       border:1px solid rgba(255,255,255,.10);
       padding:8px 10px;
       border-radius:14px;
       background:rgba(0,0,0,.22);
+      transition:all .18s var(--ease);
     }
-    .read:hover{background:rgba(255,255,255,.06)}
-    .skeleton{
-      background: linear-gradient(90deg, rgba(255,255,255,.03), rgba(255,255,255,.09), rgba(255,255,255,.03));
-      background-size: 200% 100%;
-      animation: shimmer 1.15s infinite linear;
+    .read:hover{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.18);
     }
-    @keyframes shimmer{0%{background-position: 0% 0%} 100%{background-position: -200% 0%}}
 
-    .mutinyWrap{display:grid; grid-template-columns: 1.05fr .95fr; gap:12px; align-items:stretch}
-    .mutinyCard{
+    .emptyCard{
+      grid-column:1 / -1;
+      min-height:auto;
+    }
+
+    .skeleton{
+      background:linear-gradient(90deg, rgba(255,255,255,.03), rgba(255,255,255,.09), rgba(255,255,255,.03));
+      background-size:200% 100%;
+      animation:shimmer 1.15s infinite linear;
+    }
+    @keyframes shimmer{
+      0%{background-position:0% 0%}
+      100%{background-position:-200% 0%}
+    }
+
+    #loadMoreWrap{
+      display:flex;
+      justify-content:center;
+      margin-top:16px;
+    }
+
+    .mutinyWrap{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    .mutinyCard,
+    .mutinyMedia,
+    .panel{
       border:1px solid var(--line);
       border-radius:18px;
       background:rgba(255,255,255,.04);
       padding:16px;
       position:relative;
       overflow:hidden;
-      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+      box-shadow:0 12px 36px rgba(0,0,0,.18);
     }
     .mutinyCard::before{
       content:"";
@@ -382,7 +605,12 @@
         radial-gradient(700px 280px at 50% 90%, rgba(120,255,214,.10), transparent 62%);
       pointer-events:none;
     }
-    .mutinyBrand{position:relative; display:flex; gap:12px; align-items:center}
+    .mutinyBrand{
+      position:relative;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
     .mutinyMark{
       width:58px; height:58px;
       border-radius:16px;
@@ -390,65 +618,91 @@
       background:rgba(0,0,0,.22);
       overflow:hidden;
       position:relative;
-      box-shadow: 0 14px 38px rgba(0,0,0,.22);
+      box-shadow:0 14px 38px rgba(0,0,0,.22);
     }
-    .mutinyMark video{
-      position:absolute; inset:0;
-      width:100%; height:100%;
-      object-fit:cover;
-      opacity:.98;
-      filter: contrast(1.06) saturate(1.12);
-    }
-    .mutinyTitle{font-family:var(--serif); font-size:22px}
-    .mutinySub{color:var(--muted); font-size:13px; margin-top:3px}
-    .mutinyActions{position:relative; display:flex; gap:10px; margin:14px 0 10px; flex-wrap:wrap}
-    .mutinyNote{position:relative; color:rgba(233,236,241,.82); font-size:13px; line-height:1.5}
-
-    .mutinyMedia{
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      padding:14px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.22);
-      position:relative;
-      overflow:hidden;
-      min-height:260px;
-    }
+    .mutinyMark video,
     .badgeVideo{
       position:absolute; inset:0;
       width:100%; height:100%;
       object-fit:cover;
+      filter:contrast(1.06) saturate(1.12);
+    }
+    .mutinyMark video{opacity:.98}
+    .mutinyTitle{
+      font-family:var(--serif);
+      font-size:22px;
+      line-height:1.1;
+    }
+    .mutinySub{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:3px;
+    }
+    .mutinyActions{
+      position:relative;
+      display:flex;
+      gap:10px;
+      margin:14px 0 10px;
+      flex-wrap:wrap;
+    }
+    .mutinyNote{
+      position:relative;
+      color:rgba(233,236,241,.82);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .mutinyMedia{min-height:260px}
+    .badgeVideo{
       opacity:.44;
-      filter: contrast(1.06) saturate(1.12);
-      transform: scale(1.02);
+      transform:scale(1.02);
     }
     .mutinyOverlay{
       position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(7,8,11,.20), rgba(7,8,11,.80));
+      background:linear-gradient(180deg, rgba(7,8,11,.18), rgba(7,8,11,.82));
       pointer-events:none;
     }
-    .mutinyMediaInner{position:relative; margin-top:10px}
+    .mutinyMediaInner{
+      position:relative;
+      margin-top:10px;
+    }
     .mutinyMediaInner h3{
       margin:0 0 8px;
       font-family:var(--serif);
       font-size:22px;
       line-height:1.1;
     }
-    .mutinyMediaInner p{margin:0 0 12px; color:rgba(233,236,241,.82); line-height:1.55; font-size:13px}
-
-    .twoCol{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
-    .threeCol{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px}
-    .panel{
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      padding:16px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+    .mutinyMediaInner p{
+      margin:0 0 12px;
+      color:rgba(233,236,241,.82);
+      line-height:1.58;
+      font-size:13px;
+      max-width:54ch;
     }
-    .panel h3{margin:0 0 8px; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:rgba(233,236,241,.86)}
-    .panel p{margin:0 0 12px; color:var(--muted); line-height:1.55}
 
-    /* Epstein Search UI */
+    .twoCol{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .threeCol{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    .panel h3{
+      margin:0 0 8px;
+      font-size:14px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:rgba(233,236,241,.86);
+    }
+    .panel p{
+      margin:0 0 12px;
+      color:var(--muted);
+      line-height:1.58;
+    }
+
     .epControls{
       display:flex;
       gap:10px;
@@ -456,13 +710,15 @@
       align-items:center;
       margin-bottom:12px;
     }
-    .epControls input, .epControls select{
+    .epControls input,
+    .epControls select{
       border:1px solid rgba(255,255,255,.14);
       border-radius:14px;
       background:rgba(0,0,0,.28);
       color:var(--fg);
       padding:11px 12px;
       outline:none;
+      transition:border-color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
     }
     .epControls input{flex:1; min-width:220px}
     .epControls select{min-width:210px}
@@ -478,7 +734,7 @@
     }
     .epResults{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:12px;
     }
     .epResult{
@@ -486,52 +742,82 @@
       border-radius:18px;
       background:rgba(255,255,255,.04);
       padding:14px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+      box-shadow:0 12px 36px rgba(0,0,0,.18);
       position:relative;
       overflow:hidden;
       min-height:150px;
-      transition: transform .16s ease, border-color .16s ease, background .16s ease;
+      transition:transform .16s var(--ease), border-color .16s var(--ease), background .16s var(--ease);
     }
     .epResult:hover{
-      transform: translateY(-2px);
+      transform:translateY(-2px);
       border-color:rgba(255,255,255,.20);
       background:rgba(255,255,255,.05);
     }
-    .epTitle{margin:6px 0 8px; font-size:15px; line-height:1.35; font-weight:600}
-    .epTitle a{color:var(--fg); text-decoration:none}
+    .epTitle{
+      margin:6px 0 8px;
+      font-size:15px;
+      line-height:1.38;
+      font-weight:700;
+      letter-spacing:-.01em;
+    }
+    .epTitle a{
+      color:var(--fg);
+      text-decoration:none
+    }
     .epTitle a:hover{text-decoration:underline}
-    .epSmall{font-size:12px; color:rgba(167,176,192,.90); line-height:1.45}
+    .epSmall{
+      font-size:12px;
+      color:rgba(167,176,192,.90);
+      line-height:1.5
+    }
     mark{
-      background: linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.22), rgba(120,255,214,.16));
-      color: var(--fg);
+      background:linear-gradient(135deg, rgba(120,160,255,.36), rgba(255,120,200,.22), rgba(120,255,214,.16));
+      color:var(--fg);
       padding:0 .15em;
       border-radius:.35em;
       border:1px solid rgba(255,255,255,.12);
     }
 
-    .legal{margin-top:18px; border-top:1px solid var(--line); padding-top:14px}
-    .small{color:rgba(167,176,192,.86); font-size:12px}
-    .small a{color:rgba(233,236,241,.86); text-decoration:none}
+    .legal{
+      margin-top:18px;
+      border-top:1px solid var(--line);
+      padding-top:14px
+    }
+    .small{
+      color:rgba(167,176,192,.86);
+      font-size:12px;
+      line-height:1.55;
+    }
+    .small a{
+      color:rgba(233,236,241,.86);
+      text-decoration:none
+    }
     .small a:hover{text-decoration:underline}
 
     .toast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
       z-index:120;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(10,12,18,.78);
-      backdrop-filter: blur(16px);
+      backdrop-filter:blur(16px);
       border-radius:16px;
       padding:10px 12px;
       color:rgba(233,236,241,.92);
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
       font-size:13px;
-      display:flex; align-items:center; gap:10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      max-width:min(92vw, 460px);
     }
     .toast[hidden]{display:none}
 
     .modal{
       position:fixed; inset:0; z-index:90;
-      background:rgba(0,0,0,.55);
+      background:rgba(0,0,0,.58);
       display:grid; place-items:center;
       padding:22px;
     }
@@ -541,12 +827,21 @@
       border:1px solid rgba(255,255,255,.14);
       border-radius:20px;
       background:rgba(10,12,18,.84);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
       padding:16px;
     }
-    .modalTop{display:flex; justify-content:space-between; align-items:center}
-    .modalTitle{font-family:var(--serif); font-size:22px}
+    .modalTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .modalTitle{
+      font-family:var(--serif);
+      font-size:22px;
+      line-height:1.1;
+    }
     .x{
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.04);
@@ -554,9 +849,21 @@
       padding:8px 10px;
       border-radius:14px;
       cursor:pointer;
+      transition:all .18s var(--ease);
     }
-    .modalText{color:var(--muted); line-height:1.55}
-    form.form{display:flex; gap:10px; flex-wrap:wrap}
+    .x:hover{
+      background:rgba(255,255,255,.07);
+      border-color:rgba(255,255,255,.18);
+    }
+    .modalText{
+      color:var(--muted);
+      line-height:1.58;
+    }
+    form.form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
     form.form input{
       flex:1; min-width:220px;
       border:1px solid rgba(255,255,255,.14);
@@ -565,22 +872,58 @@
       color:var(--fg);
       padding:11px 12px;
       outline:none;
+      transition:border-color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease);
     }
-    .modalFine{margin-top:10px; color:rgba(167,176,192,.86); font-size:12px}
+    .modalFine{
+      margin-top:10px;
+      color:rgba(167,176,192,.86);
+      font-size:12px;
+      line-height:1.5;
+    }
 
     @media (max-width: 980px){
-      section.hero{grid-template-columns: 1fr}
-      .grid{grid-template-columns: 1fr}
-      .twoCol{grid-template-columns: 1fr}
-      .threeCol{grid-template-columns: 1fr}
-      .mutinyWrap{grid-template-columns: 1fr}
-      .epResults{grid-template-columns: 1fr}
+      section.hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .twoCol{grid-template-columns:1fr}
+      .threeCol{grid-template-columns:1fr}
+      .mutinyWrap{grid-template-columns:1fr}
+      .epResults{grid-template-columns:1fr}
       nav.nav{display:none}
-      .hero h1{font-size:44px}
+    }
+
+    @media (max-width: 640px){
+      header.topbar{
+        padding:12px 14px;
+      }
+      main.wrap{
+        padding:24px 14px 84px;
+      }
+      .heroStats .stat{
+        min-width:calc(50% - 6px);
+        flex:1 1 0;
+      }
+      .cta{
+        gap:8px;
+      }
+      .search input{
+        width:100%;
+      }
+      .toolbar{
+        align-items:stretch;
+      }
+      .resultsMeta{
+        align-items:flex-start;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
-      .sigil::after, .dot, .tick, #field{animation:none !important}
+      .sigil::after, .dot, .tick, #field, .skeleton{
+        animation:none !important;
+      }
+      html{scroll-behavior:auto}
+      *{
+        transition:none !important;
+      }
     }
   </style>
 </head>
@@ -680,21 +1023,30 @@
 
       <div class="toolbar">
         <div class="pillset" role="tablist" aria-label="Filters">
-          <button class="pill active" data-filter="all">All</button>
-          <button class="pill" data-filter="law">Law</button>
-          <button class="pill" data-filter="gov">Gov</button>
-          <button class="pill" data-filter="finance">Finance</button>
-          <button class="pill" data-filter="investigations">Investigations</button>
+          <button class="pill active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+          <button class="pill" type="button" role="tab" aria-selected="false" data-filter="law">Law</button>
+          <button class="pill" type="button" role="tab" aria-selected="false" data-filter="gov">Gov</button>
+          <button class="pill" type="button" role="tab" aria-selected="false" data-filter="finance">Finance</button>
+          <button class="pill" type="button" role="tab" aria-selected="false" data-filter="investigations">Investigations</button>
         </div>
         <div class="search">
           <input id="q" type="search" placeholder="Search signals…" autocomplete="off" />
         </div>
       </div>
 
+      <div class="resultsMeta">
+        <div id="resultsSummary">Loading signal…</div>
+        <div id="feedHealth">Waiting on sources…</div>
+      </div>
+
       <div class="grid" id="cards">
         <div class="skeleton card"></div>
         <div class="skeleton card"></div>
         <div class="skeleton card"></div>
+      </div>
+
+      <div id="loadMoreWrap">
+        <button class="btn ghost" id="btnLoadMore" type="button">Load more</button>
       </div>
     </section>
 
@@ -800,27 +1152,18 @@
       </div>
     </section>
 
-    <!-- Epstein Search (public records federated search + in-page results where possible) -->
     <section id="epstein" class="section">
       <div class="sectionHead">
         <h2>Epstein Files Search</h2>
-        <p>Search public records + archives. Opens sources cleanly. No “could not load” garbage.</p>
+        <p>One box. One click. Court docs in-page where possible, and official searches everywhere else.</p>
       </div>
 
       <div class="panel">
         <div class="epControls">
           <input id="epQ" type="search" placeholder="Search terms (names, aliases, locations, docket IDs…)" autocomplete="off" />
-          <select id="epScope" aria-label="Scope filter">
-            <option value="all">All sources</option>
-            <option value="courtlistener">CourtListener (in-page results)</option>
-            <option value="doj">DOJ site search</option>
-            <option value="vault">FBI Vault search</option>
-            <option value="govinfo">GovInfo search</option>
-            <option value="archives">Archives / reporting</option>
-          </select>
-          <button class="btn solid" id="epRun">Search</button>
-          <button class="btn ghost" id="epOpenAll">Open Sources</button>
-          <button class="btn ghost" id="epClear">Clear</button>
+          <button class="btn solid" id="epRun" type="button">Search</button>
+          <button class="btn ghost" id="epOpenAll" type="button">Search Everything</button>
+          <button class="btn ghost" id="epClear" type="button">Clear</button>
         </div>
 
         <div class="epMetaRow">
@@ -832,7 +1175,7 @@
 
         <div class="legal">
           <div class="small">
-            “Open Sources” launches official search pages in new tabs using your query. In-page results come from CourtListener (public court docs).
+            Some government sites don’t allow browsers to pull/merge results directly (CORS). This tool still searches them by launching official searches in new tabs, while showing in-page results for sources that expose public APIs.
           </div>
         </div>
       </div>
@@ -851,7 +1194,7 @@
     <div class="modalCard">
       <div class="modalTop">
         <div class="modalTitle">Get Updates</div>
-        <button class="x" id="modalClose" aria-label="Close">✕</button>
+        <button class="x" id="modalClose" aria-label="Close" type="button">✕</button>
       </div>
 
       <p class="modalText">Drop your email. You’ll get occasional signal drops. No spam.</p>
@@ -891,6 +1234,7 @@
     const INITIAL_RENDER = 36;
     const LOAD_MORE_STEP = 24;
     const PER_FEED_LIMIT = 18;
+    const FEED_TIMEOUT_MS = 12000;
 
     const els = {
       cards: document.getElementById("cards"),
@@ -903,12 +1247,15 @@
       year: document.getElementById("year"),
       btnRefresh: document.getElementById("btnRefresh"),
       btnNotify: document.getElementById("btnNotify"),
+      btnSupport: document.getElementById("btnSupport"),
+      btnLoadMore: document.getElementById("btnLoadMore"),
+      resultsSummary: document.getElementById("resultsSummary"),
+      feedHealth: document.getElementById("feedHealth"),
       modal: document.getElementById("modal"),
       modalClose: document.getElementById("modalClose"),
       toast: document.getElementById("toast"),
 
       epQ: document.getElementById("epQ"),
-      epScope: document.getElementById("epScope"),
       epRun: document.getElementById("epRun"),
       epOpenAll: document.getElementById("epOpenAll"),
       epClear: document.getElementById("epClear"),
@@ -924,47 +1271,81 @@
       query: "",
       visibleCount: INITIAL_RENDER,
       autoTimer: null,
+      isRefreshing: false,
+      lastFeedSuccessCount: 0,
+      lastFeedAttemptCount: FEEDS.length
     };
 
     const escapeHtml = (str) => String(str || "")
-      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
 
     const cleanSummary = (s) => {
       if (!s) return "";
-      const txt = s.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-      return txt.length > 180 ? txt.slice(0, 180).trim() + "…" : txt;
+      const txt = String(s).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+      return txt.length > 185 ? txt.slice(0, 185).trim() + "…" : txt;
+    };
+
+    const normalizeTagLabel = (tag) => {
+      if (!tag) return "all";
+      return String(tag).replace(/_/g, " ");
     };
 
     const fmtTime = (dateStr) => {
       const t = Date.parse(dateStr || "");
-      if (!t) return "—";
-      return new Date(t).toLocaleString([], { year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+      if (!Number.isFinite(t)) return "—";
+      return new Date(t).toLocaleString([], {
+        year:"numeric",
+        month:"short",
+        day:"2-digit",
+        hour:"2-digit",
+        minute:"2-digit"
+      });
     };
 
-    const nowStamp = () => new Date().toLocaleString([], { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+    const nowStamp = () =>
+      new Date().toLocaleString([], { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" });
 
     function toast(msg) {
       if (!els.toast) return;
-      els.toast.querySelector("span").textContent = msg;
+      const span = els.toast.querySelector("span");
+      if (!span) return;
+      span.textContent = msg;
       els.toast.hidden = false;
-      clearTimeout(window.__t);
-      window.__t = setTimeout(() => (els.toast.hidden = true), 2600);
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        els.toast.hidden = true;
+      }, 2600);
     }
 
     function isValidHttpUrl(u) {
-      return /^https?:\/\/.+/i.test(String(u || ""));
+      return /^https?:\/\/.+/i.test(String(u || "").trim());
+    }
+
+    function safePublishedValue(value) {
+      const ts = Date.parse(value || "");
+      return Number.isFinite(ts) ? ts : 0;
     }
 
     function normalizeItem(item, sourceName, tag) {
-      const link = item.link || item.guid || "";
-      const id = item.guid || item.link || (sourceName + ":" + (item.title || "") + ":" + (item.pubDate || item.published || ""));
+      const rawLink = item.link || item.guid || "";
+      const title = String(item.title || "").trim();
+      const published = item.pubDate || item.published || item.date || "";
+      const id = String(
+        item.guid ||
+        rawLink ||
+        `${sourceName}:${title}:${published}`
+      );
+
       return {
         id,
-        title: item.title || "",
-        link,
-        published: item.pubDate || item.published || item.date || "",
-        summary: item.description || item.content || "",
+        title,
+        link: String(rawLink || "").trim(),
+        published,
+        summary: item.description || item.content || item.contentSnippet || "",
         source: sourceName,
         tag: tag === "all" ? "all" : tag
       };
@@ -973,64 +1354,72 @@
     function setTicker(items) {
       const top = items.slice(0, 6);
       els.ticker.innerHTML = top.length
-        ? top.map((it, idx) => `<div class="tick" style="animation-delay:${idx * 70}ms">${escapeHtml(it.title)}</div>`).join("")
+        ? top.map((it, idx) =>
+            `<div class="tick" style="animation-delay:${idx * 70}ms">${escapeHtml(it.title)}</div>`
+          ).join("")
         : `<div class="tick">No signal available right now.</div>`;
-    }
-
-    function ensureLoadMoreControl() {
-      if (document.getElementById("loadMoreWrap")) return;
-
-      const wrap = document.createElement("div");
-      wrap.id = "loadMoreWrap";
-      wrap.style.display = "flex";
-      wrap.style.justifyContent = "center";
-      wrap.style.marginTop = "14px";
-
-      const btn = document.createElement("button");
-      btn.id = "btnLoadMore";
-      btn.className = "btn ghost";
-      btn.textContent = "Load more";
-      btn.addEventListener("click", () => {
-        state.visibleCount += LOAD_MORE_STEP;
-        renderCards();
-      });
-
-      wrap.appendChild(btn);
-      document.getElementById("signals").appendChild(wrap);
     }
 
     function getFiltered() {
       const q = state.query.trim().toLowerCase();
+
       return state.items.filter((it) => {
         const matchTag = state.filter === "all" ? true : it.tag === state.filter;
         if (!matchTag) return false;
+
         if (!q) return true;
-        return (it.title + " " + it.summary + " " + it.source).toLowerCase().includes(q);
+
+        const haystack = `${it.title} ${cleanSummary(it.summary)} ${it.source} ${it.tag}`.toLowerCase();
+        return haystack.includes(q);
       });
     }
 
-    function renderCards() {
-      ensureLoadMoreControl();
+    function updateResultsMeta(filteredCount, totalCount) {
+      const filterLabel = state.filter === "all" ? "all signal" : normalizeTagLabel(state.filter);
+      const queryLabel = state.query.trim();
 
+      let summary = `${filteredCount} result${filteredCount === 1 ? "" : "s"} shown`;
+      if (state.filter !== "all") summary += ` · ${filterLabel}`;
+      if (queryLabel) summary += ` · matching “${queryLabel}”`;
+      if (!queryLabel && state.filter === "all") summary += ` · from ${totalCount} total items`;
+
+      els.resultsSummary.textContent = summary;
+      els.feedHealth.textContent = `${state.lastFeedSuccessCount}/${state.lastFeedAttemptCount} sources live`;
+    }
+
+    function renderEmptyState(message, note, badge = "Quiet") {
+      els.cards.innerHTML = `
+        <article class="card emptyCard">
+          <div class="cardTop">
+            <div class="source">JETTAI</div>
+            <div class="pillTag">${escapeHtml(badge)}</div>
+          </div>
+          <div class="title">${escapeHtml(message)}</div>
+          <div class="meta">${escapeHtml(note)}</div>
+        </article>
+      `;
+    }
+
+    function renderCards() {
       const filtered = getFiltered();
       const slice = filtered.slice(0, state.visibleCount);
 
-      const loadMoreBtn = document.getElementById("btnLoadMore");
-      if (loadMoreBtn) {
-        loadMoreBtn.disabled = slice.length >= filtered.length;
-        loadMoreBtn.textContent = slice.length >= filtered.length ? "No more right now" : "Load more";
+      updateResultsMeta(filtered.length, state.items.length);
+
+      if (els.btnLoadMore) {
+        const hasMore = slice.length < filtered.length;
+        els.btnLoadMore.hidden = filtered.length <= INITIAL_RENDER && !hasMore;
+        els.btnLoadMore.disabled = !hasMore;
+        els.btnLoadMore.textContent = hasMore ? "Load more" : "No more right now";
       }
 
       if (!slice.length) {
-        els.cards.innerHTML = `
-          <div class="card">
-            <div class="cardTop">
-              <div class="source">JETTAI</div>
-              <div class="pillTag">Quiet</div>
-            </div>
-            <div class="title">No matching signal.</div>
-            <div class="meta">Try “All” or clear the search box.</div>
-          </div>`;
+        renderEmptyState(
+          "No matching signal.",
+          state.query.trim() || state.filter !== "all"
+            ? "Try clearing the search box or switching back to All."
+            : "Nothing is available right now."
+        );
         els.statItems.textContent = "0";
         return;
       }
@@ -1038,164 +1427,268 @@
       els.cards.innerHTML = slice.map((it) => {
         const t = fmtTime(it.published);
         const sum = cleanSummary(it.summary);
+
         return `
-          <article class="card" data-tag="${it.tag}">
+          <article class="card" data-tag="${escapeHtml(it.tag)}">
             <div class="cardTop">
               <div class="source">${escapeHtml(it.source)}</div>
-              <div class="pillTag">${escapeHtml(it.tag)}</div>
+              <div class="pillTag">${escapeHtml(normalizeTagLabel(it.tag))}</div>
             </div>
             <div class="title">
-              <a href="${it.link}" target="_blank" rel="noreferrer">${escapeHtml(it.title)}</a>
+              <a href="${escapeHtml(it.link)}" target="_blank" rel="noreferrer">${escapeHtml(it.title || "Untitled")}</a>
             </div>
-            <div class="meta">${escapeHtml(sum || "—")}</div>
+            <div class="meta">${escapeHtml(sum || "No summary available.")}</div>
             <div class="cardBottom">
               <div class="time">${escapeHtml(t)}</div>
-              <a class="read" href="${it.link}" target="_blank" rel="noreferrer">Read</a>
+              <a class="read" href="${escapeHtml(it.link)}" target="_blank" rel="noreferrer">Read</a>
             </div>
-          </article>`;
+          </article>
+        `;
       }).join("");
 
       els.statItems.textContent = String(filtered.length);
     }
 
+    async function fetchWithTimeout(url, options = {}, timeoutMs = FEED_TIMEOUT_MS) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+
+      try {
+        const res = await fetch(url, {
+          ...options,
+          signal: ctrl.signal
+        });
+        return res;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     async function fetchFeed(feed) {
       const url = RSS2JSON + encodeURIComponent(feed.url);
-      const res = await fetch(url, { headers: { "Accept":"application/json" }});
-      if (!res.ok) throw new Error("feed");
+      const res = await fetchWithTimeout(url, {
+        headers: { "Accept":"application/json" },
+        cache: "no-store"
+      });
+
+      if (!res.ok) throw new Error(`feed:${feed.name}:${res.status}`);
+
       const data = await res.json();
-      const items = (data.items || []).slice(0, PER_FEED_LIMIT);
-      return items.map((x) => normalizeItem(x, feed.name, feed.tag));
+      const items = Array.isArray(data.items) ? data.items.slice(0, PER_FEED_LIMIT) : [];
+
+      return items
+        .map((x) => normalizeItem(x, feed.name, feed.tag))
+        .filter((item) => item.title && isValidHttpUrl(item.link));
     }
 
     function mergeNewItems(newItems) {
       let added = 0;
+
       for (const it of newItems) {
         const title = String(it.title || "").trim();
         const link = String(it.link || "").trim();
-        if (!title) continue;
-        if (!isValidHttpUrl(link)) continue;
-        if (state.seen.has(it.id) || state.seen.has(link)) continue;
+        const dedupeKey = link.toLowerCase();
+        const titleKey = `${String(it.source || "").toLowerCase()}::${title.toLowerCase()}::${safePublishedValue(it.published)}`;
+
+        if (!title || !isValidHttpUrl(link)) continue;
+        if (state.seen.has(it.id) || state.seen.has(dedupeKey) || state.seen.has(titleKey)) continue;
 
         state.seen.add(it.id);
-        state.seen.add(link);
+        state.seen.add(dedupeKey);
+        state.seen.add(titleKey);
         state.items.push(it);
         added++;
       }
 
       if (state.items.length > MAX_ITEMS_IN_MEMORY) {
-        state.items.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
+        state.items.sort((a, b) => safePublishedValue(b.published) - safePublishedValue(a.published));
         state.items = state.items.slice(0, MAX_ITEMS_IN_MEMORY);
 
-        const s = new Set();
-        for (const it of state.items) { s.add(it.id); s.add(it.link); }
-        state.seen = s;
+        const rebuilt = new Set();
+        for (const it of state.items) {
+          rebuilt.add(it.id);
+          rebuilt.add(String(it.link || "").trim().toLowerCase());
+          rebuilt.add(`${String(it.source || "").toLowerCase()}::${String(it.title || "").toLowerCase()}::${safePublishedValue(it.published)}`);
+        }
+        state.seen = rebuilt;
       }
+
       return added;
     }
 
+    function setRefreshButtonState(isLoading) {
+      if (!els.btnRefresh) return;
+      els.btnRefresh.disabled = !!isLoading;
+      els.btnRefresh.textContent = isLoading ? "Refreshing…" : "Refresh";
+    }
+
     async function refreshAll({ silent = false } = {}) {
-      if (!silent) {
-        els.cards.innerHTML = `<div class="skeleton card"></div><div class="skeleton card"></div><div class="skeleton card"></div>`;
-      }
+      if (state.isRefreshing) return;
+      state.isRefreshing = true;
+      setRefreshButtonState(true);
 
-      const gathered = [];
-      for (const f of FEEDS) {
-        try {
-          const items = await fetchFeed(f);
-          gathered.push(...items);
-        } catch { }
-      }
-
-      gathered.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
-      const added = mergeNewItems(gathered);
-
-      state.items.sort((a,b) => (Date.parse(b.published||"")||0) - (Date.parse(a.published||"")||0));
-
-      els.statSources.textContent = String(FEEDS.length);
-      els.updatedAt.textContent = nowStamp();
-
-      if (!state.items.length) {
-        setTicker([]);
+      if (!silent && state.items.length === 0) {
         els.cards.innerHTML = `
-          <div class="card">
-            <div class="cardTop">
-              <div class="source">JETTAI</div>
-              <div class="pillTag">Offline</div>
-            </div>
-            <div class="title">Signal is temporarily unavailable.</div>
-            <div class="meta">Hit refresh in a minute.</div>
-          </div>`;
-        els.statItems.textContent = "0";
-        return;
+          <div class="skeleton card"></div>
+          <div class="skeleton card"></div>
+          <div class="skeleton card"></div>
+        `;
+        els.resultsSummary.textContent = "Pulling fresh signal…";
+        els.feedHealth.textContent = "Checking sources…";
       }
 
-      setTicker(state.items);
-      renderCards();
+      try {
+        const results = await Promise.allSettled(FEEDS.map(fetchFeed));
+        const gathered = [];
+        let successCount = 0;
 
-      if (!silent && added > 0) toast(`${added} new signal${added === 1 ? "" : "s"} added.`);
+        for (const result of results) {
+          if (result.status === "fulfilled") {
+            successCount++;
+            gathered.push(...result.value);
+          }
+        }
+
+        state.lastFeedSuccessCount = successCount;
+        state.lastFeedAttemptCount = FEEDS.length;
+
+        gathered.sort((a, b) => safePublishedValue(b.published) - safePublishedValue(a.published));
+        const added = mergeNewItems(gathered);
+
+        state.items.sort((a, b) => safePublishedValue(b.published) - safePublishedValue(a.published));
+
+        els.statSources.textContent = String(FEEDS.length);
+        els.updatedAt.textContent = nowStamp();
+
+        if (!state.items.length) {
+          setTicker([]);
+          renderEmptyState(
+            "Signal is temporarily unavailable.",
+            "Outside feeds may be down. Hit refresh in a minute.",
+            "Offline"
+          );
+          els.statItems.textContent = "0";
+          updateResultsMeta(0, 0);
+          if (!silent) toast("Signal pull came back empty.");
+          return;
+        }
+
+        setTicker(state.items);
+        renderCards();
+
+        if (!silent) {
+          if (added > 0) {
+            toast(`${added} new signal${added === 1 ? "" : "s"} added.`);
+          } else {
+            toast("Signal refreshed.");
+          }
+        }
+      } catch (err) {
+        if (!state.items.length) {
+          setTicker([]);
+          renderEmptyState(
+            "Signal is temporarily unavailable.",
+            "The feed pull hit a wall. Try again in a minute.",
+            "Offline"
+          );
+          els.statItems.textContent = "0";
+          updateResultsMeta(0, 0);
+        }
+        if (!silent) toast("Refresh failed.");
+      } finally {
+        state.isRefreshing = false;
+        setRefreshButtonState(false);
+      }
     }
 
     function startAutoRefresh() {
       stopAutoRefresh();
-      state.autoTimer = setInterval(() => refreshAll({ silent: true }), AUTO_REFRESH_MS);
+      state.autoTimer = setInterval(() => {
+        if (!document.hidden) refreshAll({ silent: true });
+      }, AUTO_REFRESH_MS);
     }
+
     function stopAutoRefresh() {
       if (state.autoTimer) clearInterval(state.autoTimer);
       state.autoTimer = null;
     }
 
-    // Epstein Search: in-page results from CourtListener + clean “Open Source” links for others
+    // ===============================
+    // EPSTEIN: Unified Search UI (no-backend)
+    // - In-page results: CourtListener (API)
+    // - “Search Everything”: opens official searches in new tabs
+    // ===============================
+
     const EP_SOURCES = [
       {
-        scope: "doj",
+        key: "courtlistener",
+        name: "CourtListener (In-page results)",
+        tag: "court",
+        open: (q) => `https://www.courtlistener.com/?q=${encodeURIComponent(q)}`
+      },
+      {
+        key: "doj",
         name: "DOJ (site search)",
         tag: "doj",
         open: (q) => `https://www.justice.gov/search?search_api_fulltext=${encodeURIComponent(q)}`
       },
       {
-        scope: "vault",
-        name: "FBI Vault",
+        key: "fbi_vault",
+        name: "FBI Vault (site search)",
         tag: "vault",
         open: (q) => `https://vault.fbi.gov/search?SearchableText=${encodeURIComponent(q)}`
       },
       {
-        scope: "govinfo",
-        name: "GovInfo",
+        key: "fbi_site",
+        name: "FBI.gov (site search)",
+        tag: "fbi",
+        open: (q) => `https://www.fbi.gov/search?query=${encodeURIComponent(q)}`
+      },
+      {
+        key: "govinfo",
+        name: "GovInfo (documents)",
         tag: "govinfo",
         open: (q) => `https://www.govinfo.gov/app/search/%7B%22query%22%3A%22${encodeURIComponent(q)}%22%7D`
       },
       {
-        scope: "archives",
-        name: "CourtListener (web)",
-        tag: "courtlistener",
-        open: (q) => `https://www.courtlistener.com/?q=${encodeURIComponent(q)}`
+        key: "archives",
+        name: "Internet Archive",
+        tag: "archive",
+        open: (q) => `https://archive.org/search?query=${encodeURIComponent(q)}`
       },
       {
-        scope: "archives",
-        name: "Internet Archive",
-        tag: "archives",
-        open: (q) => `https://archive.org/search?query=${encodeURIComponent(q)}`
+        key: "wikipedia",
+        name: "Wikipedia (context)",
+        tag: "context",
+        open: (q) => `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(q)}`
       }
     ];
 
     const COURTLISTENER_API = "https://www.courtlistener.com/api/rest/v3/search/?type=o&q=";
     const EP_MAX_RESULTS = 30;
 
-    function safeFetchJson(url, timeoutMs = 9000) {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), timeoutMs);
-      return fetch(url, { signal: ctrl.signal, headers: { "Accept":"application/json" } })
-        .then(r => (clearTimeout(t), r.ok ? r.json() : null))
-        .catch(() => null);
+    async function safeFetchJson(url, timeoutMs = 9000) {
+      try {
+        const res = await fetchWithTimeout(url, {
+          headers: { "Accept":"application/json" },
+          cache: "no-store"
+        }, timeoutMs);
+        if (!res.ok) return null;
+        return await res.json();
+      } catch {
+        return null;
+      }
     }
 
     function highlight(text, q) {
       if (!q) return escapeHtml(text || "");
       const safe = String(text || "");
-      const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
+      const escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const re = new RegExp(escapedQ, "ig");
       const parts = safe.split(re);
       const matches = safe.match(re);
       if (!matches) return escapeHtml(safe);
+
       let out = "";
       for (let i = 0; i < parts.length; i++) {
         out += escapeHtml(parts[i]);
@@ -1204,102 +1697,159 @@
       return out;
     }
 
+    function renderEpsteinLauncher(q) {
+      const clean = (q || "").trim();
+      const rows = EP_SOURCES.map((s) => {
+        const href = s.open(clean || "Jeffrey Epstein");
+
+        return `
+          <article class="epResult">
+            <div class="cardTop">
+              <div class="source">${escapeHtml(s.name)}</div>
+              <div class="pillTag">${escapeHtml(s.tag)}</div>
+            </div>
+            <div class="epTitle">
+              <a href="${escapeHtml(href)}" target="_blank" rel="noreferrer">Open search</a>
+            </div>
+            <div class="epSmall">
+              Runs a public search on the official site using your query.
+            </div>
+            <div class="cardBottom" style="margin-top:12px;">
+              <div class="time">External</div>
+              <a class="read" href="${escapeHtml(href)}" target="_blank" rel="noreferrer">Open</a>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      return `
+        <article class="epResult" style="grid-column: 1 / -1;">
+          <div class="cardTop">
+            <div class="source">Search Everything</div>
+            <div class="pillTag">Launchers</div>
+          </div>
+          <div class="epSmall">
+            Some government sites don’t allow browsers to pull and merge results into a single page (CORS).
+            These launch official searches in new tabs. In-page results appear below where public APIs exist.
+          </div>
+        </article>
+        ${rows}
+      `;
+    }
+
     function renderEpsteinResults(results, q, note) {
       els.epStatus.textContent = note || "Ready.";
       els.epCount.textContent = String(results.length);
 
-      if (!results.length) {
-        els.epResults.innerHTML = `
-          <div class="epResult" style="grid-column: 1 / -1;">
+      const launcher = renderEpsteinLauncher(q);
+      const body = results.length
+        ? results.map((r) => `
+            <article class="epResult">
+              <div class="cardTop">
+                <div class="source">${escapeHtml(r.source || "CourtListener")}</div>
+                <div class="pillTag">${escapeHtml(r.tag || "court")}</div>
+              </div>
+              <div class="epTitle">
+                <a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${highlight(r.title, q)}</a>
+              </div>
+              <div class="epSmall">${highlight(r.snippet, q)}</div>
+              <div class="cardBottom" style="margin-top:12px;">
+                <div class="time">${escapeHtml(r.date || "—")}</div>
+                <a class="read" href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">Open</a>
+              </div>
+            </article>
+          `).join("")
+        : `
+          <article class="epResult" style="grid-column: 1 / -1;">
             <div class="cardTop">
-              <div class="source">JETTAI</div>
+              <div class="source">CourtListener</div>
               <div class="pillTag">No hits</div>
             </div>
             <div class="epTitle">No in-page results.</div>
-            <div class="epSmall">Use “Open Sources” to search DOJ/FBI/GovInfo/Archives in new tabs with your query.</div>
-          </div>`;
-        return;
-      }
+            <div class="epSmall">Use the launchers above to search DOJ / FBI Vault / GovInfo / Archive.</div>
+          </article>
+        `;
 
-      els.epResults.innerHTML = results.map((r) => {
-        const title = r.title || "Untitled";
-        const url = r.url || "#";
-        const snippet = r.snippet || "";
-        const source = r.source || "CourtListener";
-        const date = r.date || "—";
-        const tag = r.tag || "court";
-        return `
-          <article class="epResult">
-            <div class="cardTop">
-              <div class="source">${escapeHtml(source)}</div>
-              <div class="pillTag">${escapeHtml(tag)}</div>
-            </div>
-            <div class="epTitle">
-              <a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${highlight(title, q)}</a>
-            </div>
-            <div class="epSmall">${highlight(snippet, q)}</div>
-            <div class="cardBottom" style="margin-top:12px;">
-              <div class="time">${escapeHtml(date)}</div>
-              <a class="read" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open</a>
-            </div>
-          </article>`;
-      }).join("");
+      els.epResults.innerHTML = launcher + body;
     }
 
-    function openEpsteinSources(q, scope) {
+    function openAllEpsteinSources(q) {
       const clean = (q || "").trim();
-      if (!clean) return;
-
-      const targets = EP_SOURCES.filter(s => scope === "all" ? true : s.tag === scope || s.scope === scope);
-      for (const t of targets) window.open(t.open(clean), "_blank", "noopener,noreferrer");
+      if (!clean) {
+        toast("Add a search term first.");
+        return;
+      }
+      for (const s of EP_SOURCES) {
+        window.open(s.open(clean), "_blank", "noopener,noreferrer");
+      }
     }
 
     async function runEpsteinSearch() {
       const q = (els.epQ.value || "").trim();
-      const scope = (els.epScope.value || "all").trim();
 
       if (!q) {
-        renderEpsteinResults([], "", "Type a query to search public sources.");
+        renderEpsteinResults([], "", "Type a query to search.");
         return;
       }
 
-      const wantsCourtListener = (scope === "all" || scope === "courtlistener");
-      if (!wantsCourtListener) {
-        renderEpsteinResults([], q, "In-page results are CourtListener only. Use “Open Sources” for the rest.");
-        return;
-      }
-
-      els.epResults.innerHTML = `<div class="skeleton epResult"></div><div class="skeleton epResult"></div><div class="skeleton epResult"></div>`;
-      els.epStatus.textContent = "Searching CourtListener…";
+      els.epResults.innerHTML = renderEpsteinLauncher(q) + `
+        <div class="skeleton epResult"></div>
+        <div class="skeleton epResult"></div>
+        <div class="skeleton epResult"></div>
+      `;
+      els.epStatus.textContent = "Searching CourtListener (in-page)…";
 
       const data = await safeFetchJson(COURTLISTENER_API + encodeURIComponent(q), 9000);
-      const rows = (data && data.results) ? data.results.slice(0, EP_MAX_RESULTS) : [];
+      const rows = (data && Array.isArray(data.results)) ? data.results.slice(0, EP_MAX_RESULTS) : [];
 
       const mapped = rows.map(r => {
         const url = r.absolute_url ? ("https://www.courtlistener.com" + r.absolute_url) : (r.url || "");
         const title = r.caseName || r.title || r.description || "Result";
-        const snippet = (r.snippet || r.text || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 220);
+        const snippet = String(r.snippet || r.text || "")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 220);
         const date = r.dateFiled || r.dateCreated || r.dateModified || "";
         return { title, url, snippet, date, source: "CourtListener", tag: "court" };
       }).filter(x => isValidHttpUrl(x.url));
 
-      renderEpsteinResults(mapped, q, mapped.length ? "CourtListener results loaded." : "No CourtListener results. Use “Open Sources”.");
+      if (!mapped.length) {
+        renderEpsteinResults([], q, "No in-page results. Launchers are ready above.");
+        return;
+      }
+
+      renderEpsteinResults(mapped, q, "CourtListener results loaded. Launchers above search the rest.");
+    }
+
+    function setActiveFilter(nextFilter) {
+      state.filter = nextFilter || "all";
+      state.visibleCount = INITIAL_RENDER;
+
+      els.pills.forEach((p) => {
+        const active = p.dataset.filter === state.filter;
+        p.classList.toggle("active", active);
+        p.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      renderCards();
     }
 
     function bindUI() {
       els.pills.forEach((p) => {
         p.addEventListener("click", () => {
-          els.pills.forEach((x) => x.classList.remove("active"));
-          p.classList.add("active");
-          state.filter = p.dataset.filter || "all";
-          state.visibleCount = INITIAL_RENDER;
-          renderCards();
+          setActiveFilter(p.dataset.filter || "all");
         });
       });
 
       els.q?.addEventListener("input", () => {
         state.query = els.q.value || "";
         state.visibleCount = INITIAL_RENDER;
+        renderCards();
+      });
+
+      els.btnLoadMore?.addEventListener("click", () => {
+        state.visibleCount += LOAD_MORE_STEP;
         renderCards();
       });
 
@@ -1310,41 +1860,52 @@
         setTimeout(() => document.getElementById("email")?.focus(), 50);
       });
 
-      els.modalClose?.addEventListener("click", () => (els.modal.hidden = true));
-      els.modal?.addEventListener("click", (e) => { if (e.target === els.modal) els.modal.hidden = true; });
+      els.modalClose?.addEventListener("click", () => {
+        els.modal.hidden = true;
+      });
+
+      els.modal?.addEventListener("click", (e) => {
+        if (e.target === els.modal) els.modal.hidden = true;
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !els.modal.hidden) els.modal.hidden = true;
+      });
 
       document.addEventListener("visibilitychange", () => {
         if (document.visibilityState === "visible") refreshAll({ silent: true });
       });
 
       els.epRun?.addEventListener("click", runEpsteinSearch);
-      els.epOpenAll?.addEventListener("click", () => {
-        const q = (els.epQ.value || "").trim();
-        const scope = (els.epScope.value || "all").trim();
-        if (!q) return;
-        const mappedScope = scope === "courtlistener" ? "all" : scope;
-        openEpsteinSources(q, mappedScope);
-      });
+      els.epOpenAll?.addEventListener("click", () => openAllEpsteinSources(els.epQ.value || ""));
       els.epClear?.addEventListener("click", () => {
         els.epQ.value = "";
-        els.epScope.value = "all";
         renderEpsteinResults([], "", "Ready.");
       });
       els.epQ?.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") { e.preventDefault(); runEpsteinSearch(); }
+        if (e.key === "Enter") {
+          e.preventDefault();
+          runEpsteinSearch();
+        }
       });
     }
 
     function startField() {
       const c = document.getElementById("field");
       const ctx = c.getContext("2d", { alpha: true });
-      let w = 0, h = 0, dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      if (!ctx) return;
+
+      let w = 0, h = 0;
+      let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
       const stars = [];
       const N = 155;
+      let rafId = null;
 
       function resize() {
         w = Math.floor(window.innerWidth);
         h = Math.floor(window.innerHeight);
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+
         c.width = Math.floor(w * dpr);
         c.height = Math.floor(h * dpr);
         c.style.width = w + "px";
@@ -1367,7 +1928,10 @@
       }
 
       let mx = w / 2, my = h / 2;
-      window.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+      window.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+      }, { passive: true });
 
       function draw() {
         ctx.clearRect(0, 0, w, h);
@@ -1415,13 +1979,28 @@
           ctx.fill();
         }
 
-        requestAnimationFrame(draw);
+        rafId = requestAnimationFrame(draw);
       }
 
       resize();
       seed();
-      window.addEventListener("resize", () => { resize(); seed(); }, { passive: true });
-      requestAnimationFrame(draw);
+      window.addEventListener("resize", () => {
+        resize();
+        seed();
+      }, { passive: true });
+
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        rafId = requestAnimationFrame(draw);
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        } else if (!document.hidden && !rafId && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          rafId = requestAnimationFrame(draw);
+        }
+      });
     }
 
     (async function init() {
@@ -1433,10 +2012,11 @@
 
       bindUI();
       startField();
+      renderEpsteinResults([], "", "Ready.");
+      updateResultsMeta(0, 0);
 
       await refreshAll({ silent: false });
       startAutoRefresh();
-      renderEpsteinResults([], "", "Ready.");
     })();
   </script>
 </body>
